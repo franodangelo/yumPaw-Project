@@ -1,14 +1,10 @@
-const { Router } = require ('express');
-const { Provider, Pet, Event } = require('../db');
+const { Router } = require('express');
+const router = Router();
+const { Provider } = require('../db');
 const { Op } = require('sequelize');
 
-
-const router = Router();
-
 router.get('/', async (req, res, next) => {
-    const {
-        name
-    } = req.query
+    const { name } = req.query;
     let allProviders;
     try {
         if (name) {
@@ -18,14 +14,14 @@ router.get('/', async (req, res, next) => {
                     name: {
                         [Op.iLike]: '%' + name + '%'
                     }
-                },
+                }
             })
         } else {
-            allProviders = await Provider.findAll({})
+            allProviders = await Provider.findAll({});
         }
-        allProviders.length ?
-            res.status(200).send(allProviders) :
-            res.status(400).send('No hay usuarios cargados')
+        allProviders.length 
+        ? res.status(200).send(allProviders) 
+        : res.status(400).send('No hay usuarios cargados en la plataforma');
     } catch (err) {
         next(err)
     }
@@ -36,8 +32,8 @@ router.get('/:email', async (req, res, next) => {
     try {
         let providerId = await Provider.findByPk(email);
         res.send(providerId);
-    } catch (error) {
-        next(error)
+    } catch (err) {
+        next(err)
     }
 });
 
@@ -58,8 +54,8 @@ router.post('/', async (req, res, next) => {
         longitude,
         latitude
     } = req.body;
-    let auxName = name.toLowerCase()
-    let auxLastName = lastName.toLowerCase()
+    let auxName = name.toLowerCase();
+    let auxLastName = lastName.toLowerCase();
     try {
         await Provider.findOrCreate({
             where: {
@@ -80,14 +76,13 @@ router.post('/', async (req, res, next) => {
                 price,
                 typeOfHousing,
                 housingPhotos,
-                housingPhotos,
                 schedule,
                 dogsPerWalk,
                 latitude,
-                longitude,
+                longitude
             }
         })
-        res.status(201).send('Usuario creado con éxito')
+        res.status(201).send('El usuario fue creado con éxito');
     } catch (err) {
         next(err)
     }
@@ -95,35 +90,30 @@ router.post('/', async (req, res, next) => {
 
 router.put('/', async (req, res, next) => {
     const provider = req.body;
-    // console.log(provider)
     try {
         await Provider.update(provider, {
             where: {
                 email: provider.email
             }
         })
-        return res.json('Usuario modificado')
+        return res.json('El usuario fue modificado con éxito');
     } catch (err) {
         next(err)
     }
 });
 
 router.delete('/:id', async (req, res, next) => {
-    const id = req.params.id;
+    const { id } = req.params;
     try {
         await Provider.destroy({
             where: {
                 id: id
             }
         })
-        return res.json('Usuario desvinculado')
+        return res.json('El usuario fue elimindo con éxito');
     } catch (err) {
         next(err)
     }
 });
 
-
-
-  
-  
 module.exports = router;

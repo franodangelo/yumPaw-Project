@@ -1,14 +1,13 @@
 const { Router } = require("express");
-const { Sold, Owner } = require("../db");
 const router = Router();
+const { Sold, Owner } = require("../db");
 
 router.get("/", async (req, res, next) => {
   try {
     let allSolds = await Sold.findAll({});
-
-    allSolds.length
-      ? res.status(200).send(allSolds)
-      : res.status(400).send("No hay ventas");
+    allSolds.length ?
+      res.status(200).send(allSolds) :
+      res.status(400).send("No hay ventas en la plataforma");
   } catch (err) {
     next(err);
   }
@@ -23,7 +22,7 @@ router.post("/", async (req, res, next) => {
     status,
     date_created,
     transaction_amount,
-    email,
+    email
   } = req.body;
   try {
     let newSold = await Sold.create({
@@ -33,40 +32,28 @@ router.post("/", async (req, res, next) => {
       items,
       status,
       date_created,
-      transaction_amount,
+      transaction_amount
     });
-
-    console.log("SOY UN NEWSOLD",newSold)
-
     let found = await Owner.findOne({
       where: {
-        email: email,
-      },
+        email: email
+      }
     });
-    console.log("nombre", found)
-    console.log("nombre", email)
-
     await found.addSold(newSold);
-
-    res.status(201).send("Venta cargada con éxito");
+    res.status(201).send("La venta fue cargada con éxito");
   } catch (err) {
     next(err);
   }
 });
 
 router.get('/:id', async (req, res, next) => {
-    const { id } = req.params;
-
-  let soldById
-
+  const { id } = req.params;
   try {
-    soldById = await Sold.findByPk(id)
-      res.send(soldById)
-
-  } catch (error) {
-      next(error)
+    let soldById = await Sold.findByPk(id);
+    res.send(soldById);
+  } catch (err) {
+    next(err)
   }
-
 })
 
 module.exports = router;

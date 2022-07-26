@@ -1,7 +1,6 @@
 const { Router } = require('express');
-const { Owner, Pet } = require('../db');
-
 const router = Router();
+const { Owner, Pet } = require('../db');
 
 router.get('/', async (req, res, next) => {
     try {
@@ -10,9 +9,9 @@ router.get('/', async (req, res, next) => {
                 ['name', 'ASC']
             ]
         })
-        allPets.length ?
-            res.status(200).send(allPets) :
-            res.status(400).send('No hay mascotas cargados')
+        allPets.length 
+        ? res.status(200).send(allPets) 
+        : res.status(400).send('No hay mascotas cargadas en la plataforma');
     } catch (err) {
         next(err)
     }
@@ -38,41 +37,35 @@ router.post('/', async (req, res, next) => {
             profilePicture: photos,
             description
         })
-        // console.log(newPet)
         let found = await Owner.findOne({
             where: {
                 email: ownerEmail
             }
         })
-        // console.log('nombre', found)
-        // console.log('nombre', ownerEmail)
-        await found.addPet(newPet)
-        // await newPet.addOwner(1)
-        res.status(201).send('Usuario creado con éxito')
+        await found.addPet(newPet);
+        res.status(201).send('El usuario fue creado con éxito');
     } catch (err) {
         next(err)
     }
 });
 
 router.put('/:id', async (req, res, next) => {
-    const id = req.params.id
-    const pet = req.body
-
+    const { id } = req.params;
+    const pet = req.body;
     try {
         await Pet.update(pet, {
             where: {
                 id: id
             }
         })
-        return res.json('Mascota modificada')
+        return res.json('La mascota fue modificada con éxito');
     } catch (err) {
         next(err)
     }
 });
 
 router.delete('/:id', async (req, res, next) => {
-    const id = req.params.id
-
+    const { id } = req.params;
     try {
         await Pet.update({
             isActive: false
@@ -81,7 +74,7 @@ router.delete('/:id', async (req, res, next) => {
                 id: id
             }
         })
-        return res.json('Mascota desvinculado')
+        return res.json('La mascota fue eliminada con éxito');
     } catch (err) {
         next(err)
     }

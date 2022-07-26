@@ -1,21 +1,20 @@
 const { Router } = require ('express');
+router = Router();
 const { Review, Owner, Provider} = require('../db');
 
-router = Router();
-
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
     try {
         const reviews = await Review.findAll({
             include: [Owner, Provider]
         })
         res.status(201).json(reviews);
-    } catch (error) {
-        res.status(404).send('encontramos nada');
+    } catch (err) {
+        res.status(404).send('No existen reseñas en la plataforma');
     }
-})
+});
 
-router.post('/', async (req, res) => {
-    const { ownerEmail, providerEmail, OwnerName, review, message } = req.body
+router.post('/', async (req, res, next) => {
+    const { ownerEmail, providerEmail, OwnerName, review, message } = req.body;
     try {
         const reviews = await Review.findOrCreate({
             where: {
@@ -27,24 +26,24 @@ router.post('/', async (req, res) => {
                 providerEmail,
                 name: OwnerName,
                 review,
-                message,
+                message
             }
         })
         res.status(201).json(reviews);
-    } catch (error) {
-        res.status(404).send('encontramos nada');
+    } catch (err) {
+        next(err);
     }
-})
+});
 
 router.put('/', async (req, res, next) =>{
     const newReview = req.body;
     try{
-        await Review.update(newReview,{
+        await Review.update(newReview, {
             where:{
                 id: newReview.id
             }
         }) 
-        return res.json('Usuario modificado');
+        return res.json('El usuario fue modificado con éxito');
     }catch(err){
         next(err)
     }

@@ -1,25 +1,16 @@
 const { Router } = require("express");
-const { Product } = require("../db");
-const { Op } = require("sequelize");
-const {
-  ACCESS_TOKEN
-} = process.env;
-
-const { mercadopago } = require("../utils/mercadoPago");
-
 const router = Router();
+const { Op } = require("sequelize");
+const { Product } = require("../db");
+const { mercadopago } = require("../utils/mercadoPago");
+const { ACCESS_TOKEN } = process.env;
 
 const payProduct = async (req, res) => {
-  // const id = req.params.id
   const cart = req.body.cart;
   const user = req.body.user;
-  const date = req.body.response;
 
-  console.log("USUARIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", user);
-  console.log("CARRITOOOOOOOOOOOOOO", cart);
-  // const product = await Product.findByPk(id)
   let items = [];
-
+  
   cart.forEach((i) =>
     items.push({
       service: i.name,
@@ -27,19 +18,14 @@ const payProduct = async (req, res) => {
       quantity: i.quantity,
       title: i.name,
       unit_price: i.price,
-      currency_id: "ARS",
-     
+      currency_id: "ARS"
     })
   );
 
   let payer = {
     name: user.given_name,
-    surname: user.family_name,
-    // client_id
-    // id: body.client_id
-    //   email: user.email
+    surname: user.family_name
   };
-  // console.log("PAYEEEEEEEEEEEERR",payer)
 
   let preference = {
     payer_email: "test_user_41002316@testuser.com",
@@ -48,15 +34,15 @@ const payProduct = async (req, res) => {
     back_urls: {
       failure: "/failure",
       pending: "/pending",
-      success: "http://localhost:3000/confirmacion",
+      success: "http://localhost:3000/confirmacion"
     },
     notification_url: "https://1bbb-181-168-161-231.sa.ngrok.io/products/notificacion",
-    auto_return: "approved",
+    auto_return: "approved"
   };
+
   mercadopago.preferences
     .create(preference)
     .then((response) => {
-      console.log("RESPONSEEEEEEEEEEEEEEEE", response);
       res.set("Access-Control-Allow-Origin", "*");
       res.set("Access-Control-Allow-Methods", "POST");
       res.set("Access-Control-Allow-Headers", "Content-Type");
@@ -64,37 +50,34 @@ const payProduct = async (req, res) => {
       res.set("Access-Control-Allow-Credentials", true);
       console.log("URL: ", response.body.init_point);
       res.json({
-        global: response.body.id,
-        // response
+        global: response.body.id
       });
     })
-    .catch((err) => console.log(err));
+    .catch(err => console.log(err));
 };
+
 router.post("/checkout", payProduct);
 
 const orderNotification = async (req, res) => {
   try {
-    console.log(req.body)
-    res.status(200).send("OK");
-  } catch (error) {
-    console.log("ERROR", error)
+    res.status(200).send("Notification sent");
+  } catch (err) {
+    next(err)
   }
 };
 
 router.post("/notificacion", orderNotification);
 
-router.get("/confirmation", async(req,res,next) => {
-  const id = req.body.data.id
+router.get("/confirmation", async (req, res, next) => {
+  const id = req.body.data.id;
   try {
-    if(id){
-      let res = await axios.get(`https://api.mercadopago.com/v1/payments/${id}?access_token=${ACCESS_TOKEN}`)
-      console.log("RESPUESTA COMPRAAAAAAAAAAA", res);
-      res.send("informacion zarpada loco")
+    if (id) {
+      let res = await axios.get(`https://api.mercadopago.com/v1/payments/${id}?access_token=${ACCESS_TOKEN}`);
+      res.send("Info");
     }
-    console.log("NO ENTRO")
-    res.send("volver a empezar que no termina el juego")
+    res.send("Try again");
   } catch (err) {
-    console.log("ERR", err)
+    next(err);
   }
 })
 
@@ -107,44 +90,38 @@ router.get("/", async (req, res, next) => {
         where: {
           name: {
             [Op.iLike]: "%" + name + "%",
-          },
-        },
+          }
+        }
       });
     } else {
       allProducts = await Product.findAll({});
     }
     allProducts
       ? res.status(200).send(allProducts)
-      : res.status(400).send("No hay productos cargados");
+      : res.status(400).send("No hay productos cargados en la plataforma");
   } catch (err) {
     next(err);
   }
 });
 
 router.get('/:id', async (req, res, next) => {
-    const {
-        id
-    } = req.params;
-    let productById
-    try {
-        productById = await Product.findByPk(id)
-        res.send(productById)
-    } catch (error) {
-        next(error)
-    }
+  const { id } = req.params;
+  try {
+    let productById = await Product.findByPk(id);
+    res.send(productById)
+  } catch (err) {
+    next(err);
+  }
 });
 
 router.get('/:id', async (req, res, next) => {
-    const {
-        id
-    } = req.params;
-    let productById
-    try {
-        productById = await Product.findByPk(id)
-        res.send(productById)
-    } catch (error) {
-        next(error)
-    }
+  const { id } = req.params;
+  try {
+    let productById = await Product.findByPk(id);
+    res.send(productById)
+  } catch (err) {
+    next(err);
+  }
 });
 
 router.post("/", async (req, res, next) => {
@@ -157,7 +134,7 @@ router.post("/", async (req, res, next) => {
     profilePicture,
     targetAnimal,
     tradeMark,
-    description,
+    description
   } = req.body;
   try {
     await Product.findOrCreate({
@@ -171,45 +148,41 @@ router.post("/", async (req, res, next) => {
         description,
         targetAnimal,
         tradeMark,
-        description,
-      },
+        description
+      }
     });
-    res.status(201).send("Producto agregado con éxito");
+    res.status(201).send("El producto fue agregado con éxito");
   } catch (err) {
-    console.log(err);
     next(err);
   }
 });
 
 router.put("/:id", async (req, res, next) => {
-  const id = req.params.id;
+  const { id } = req.params;
   const product = req.body;
   try {
     await Product.update(product, {
       where: {
-        id: id,
-      },
+        id: id
+      }
     });
-    return res.json("Producto modificado");
+    return res.json("El producto fue modificado con éxito");
   } catch (err) {
     next(err);
   }
 });
 
 router.delete("/:id", async (req, res, next) => {
-  const id = req.params.id;
+  const { id } = req.params;
   try {
-    await Product.update(
-      {
-        isActive: false,
-      },
-      {
-        where: {
-          id: id,
-        },
+    await Product.update({
+      isActive: false,
+    }, {
+      where: {
+        id: id
       }
-    );
-    return res.json("Producto eliminado");
+    });
+    return res.json("El producto fue eliminado con éxito");
   } catch (err) {
     next(err);
   }
