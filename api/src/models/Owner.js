@@ -1,7 +1,6 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-
   sequelize.define('owner', {
     name: {
       type: DataTypes.STRING,
@@ -51,6 +50,5 @@ module.exports = (sequelize) => {
       type:DataTypes.BOOLEAN,
       defaultValue: false,
     }
-
   })
 };
