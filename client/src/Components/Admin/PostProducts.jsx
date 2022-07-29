@@ -1,18 +1,17 @@
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Widget } from "@uploadcare/react-widget";
 import { Container, Form, Button } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import { useFormik } from "formik";
+import Swal from "sweetalert2";
 import { postProduct } from "../../redux/actions/petshopActions";
 import NavBar from "../NavBar/NavBarShop";
 import Footer from "../Footer/Footer";
-import { Widget } from "@uploadcare/react-widget";
-import Swal from "sweetalert2";
-import { useDispatch } from "react-redux";
 
 export default function PutProduct() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -22,7 +21,7 @@ export default function PutProduct() {
       targetAnimal: '',
       tradeMark: '',
       weight: null,
-      isActive: true,
+      isActive: true
     },
     onSubmit: (formData) => {
       Swal.fire({
@@ -39,33 +38,45 @@ export default function PutProduct() {
           Swal.fire(`${formData.name} aún no está en el shop :( `, '', 'info')
         }
       })
-    },
+    }
   });
 
   function backToTheList() {
-    navigate('/admin/listado-productos')
+    navigate('/admin/listado-productos');
   }
 
   const categoriesOptions = [
-    { key: "alimento", value: "alimento", text: "alimento" }, { key: "accesorios", value: "accesorios", text: "accesorios" }, { key: "salud y bienestar", value: "salud y bienestar", text: "salud y bienestar" }
+    { key: "alimento", value: "alimento", text: "alimento" },
+    { key: "accesorios", value: "accesorios", text: "accesorios" },
+    { key: "salud y bienestar", value: "salud y bienestar", text: "salud y bienestar" }
   ];
 
   const targetAnimalOptions = [
-    { key: "perro", value: "perro", text: "perro" }, { key: "gato", value: "gato", text: "gato" }, { key: "tortuga", value: "tortuga", text: "tortuga" }, { key: "conejo", value: "conejo", text: "conejo" }, { key: "pez", value: "pez", text: "pez" }, { key: "hamster", value: "hamster", text: "hamster" }, { key: "pajaro", value: "pajaro", text: "pajaro" }, { key: "otro", value: "otro", text: "otro" }
+    { key: "perro", value: "perro", text: "perro" },
+    { key: "gato", value: "gato", text: "gato" },
+    { key: "tortuga", value: "tortuga", text: "tortuga" },
+    { key: "conejo", value: "conejo", text: "conejo" },
+    { key: "pez", value: "pez", text: "pez" },
+    { key: "hamster", value: "hamster", text: "hamster" },
+    { key: "pajaro", value: "pajaro", text: "pajaro" },
+    { key: "otro", value: "otro", text: "otro" }
   ];
 
   const tradeMarkOptions = [
-    { key: "pro plan", value: "pro plan", text: "pro plan" }, { key: "pedigree", value: "pedigree", text: "pedigree" }, { key: "vital can", value: "vital can", text: "vital can" }, { key: "eukanuba", value: "eukanuba", text: "eukanuba" }
+    { key: "pro plan", value: "pro plan", text: "pro plan" },
+    { key: "pedigree", value: "pedigree", text: "pedigree" },
+    { key: "vital can", value: "vital can", text: "vital can" },
+    { key: "eukanuba", value: "eukanuba", text: "eukanuba" }
   ];
 
   return (
     <div>
       <NavBar />
       <Container>
-        <div >
+        <div>
           <h2>Agregar producto al Petshop</h2>
           <Form onSubmit={formik.handleSubmit}>
-            <div >
+            <div>
               <Form.Input
                 type="string"
                 placeholder="Nombre del producto"
@@ -145,4 +156,4 @@ export default function PutProduct() {
       <Footer />
     </div>
   );
-}
+};

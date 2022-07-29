@@ -1,38 +1,36 @@
-import React from 'react';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getProducts, selectedProduct, putProduct } from '../../redux/actions/petshopActions';
-import { useEffect } from 'react';
-import Button from '@material-ui/core/Button';
 import { Link, useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
+import { getProducts, selectedProduct, putProduct } from '../../redux/actions/petshopActions';
 import NavBar from '../NavBar/NavBarShop';
 import Footer from "../Footer/Footer";
-import TableCell from "@mui/material/TableCell";
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import Table from "@mui/material/Table";
+import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import Swal from "sweetalert2";
+import Button from '@material-ui/core/Button';
 import style from "./AdminDashboard.module.css";
 
 export default function ProductsList() {
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const products = useSelector(state => state.products);
 
   useEffect(() => {
-    dispatch(getProducts())
+    dispatch(getProducts());
   }, [dispatch])
 
   useEffect(() => {
   }, [products]);
 
   function clickSelectProduct(id) {
-    dispatch(selectedProduct(id))
-    navigate('/admin/modificar-producto')
+    dispatch(selectedProduct(id));
+    navigate('/admin/modificar-producto');
   }
 
   function addProduct() {
-    navigate('/admin/agregar-productos')
+    navigate('/admin/agregar-productos');
   }
 
   function inactive(id) {
@@ -86,7 +84,6 @@ export default function ProductsList() {
           <Button onClick={() => inactive(cellValues.id)}>Desactivar</Button>;
       }
     },
-
     {
       field: 'Modificar',
       renderCell: (cellValues) => {
@@ -101,7 +98,7 @@ export default function ProductsList() {
       renderCell: (cellValues) => {
         return <Link to={`/shop/${cellValues.id}`}>Ver</Link>;
       }
-    },
+    }
   ];
 
   const rows = products.map(prod => {
@@ -113,35 +110,31 @@ export default function ProductsList() {
       category: prod.category,
       tradeMark: prod.tradeMark,
       targetAnimal: prod.targetAnimal,
-      state: prod.isActive ? 'ACTIVO' : 'INACTIVO',
+      state: prod.isActive ? 'ACTIVO' : 'INACTIVO'
     }
   })
 
   function back() {
-    navigate('/admin')
+    navigate('/admin');
   }
 
   return (
     <>
       <NavBar />
       <div className={style.contenedor}>
-
-      
-      <Button onClick={addProduct}>Agregar producto</Button>
-      <Table stickyHeader aria-label="sticky table">
-        <TableRow stickyHeader aria-label="sticky table">
-          <TableCell align="center" colSpan={7}>
-            Lista de productos
-          </TableCell>
-        </TableRow>
-      </Table>
-      <div style={{ height: 400, width: '100%' }}>
-        <DataGrid rows={rows} columns={columns} components={{ Toolbar: GridToolbar }}
-        />
-      </div>
-      <Button onClick={back}>Volver</Button>
+        <Button onClick={addProduct}>Agregar producto</Button>
+        <Table stickyHeader aria-label="sticky table">
+          <TableRow stickyHeader aria-label="sticky table">
+            <TableCell align="center" colSpan={7}>Lista de productos</TableCell>
+          </TableRow>
+        </Table>
+        <div style={{ height: 400, width: '100%' }}>
+          <DataGrid rows={rows} columns={columns} components={{ Toolbar: GridToolbar }}
+          />
+        </div>
+        <Button onClick={back}>Volver</Button>
       </div>
       <Footer />
     </>
   );
-}
+};

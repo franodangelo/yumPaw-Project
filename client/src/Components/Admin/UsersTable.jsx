@@ -1,30 +1,27 @@
-import React, { useState } from "react";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import {
   getOwners,
   getProviders,
   putOwnerInfo,
   getReviews,
 } from "../../redux/actions/ownProvActions";
-import { useEffect } from "react";
-import Button from "@material-ui/core/Button";
-import { useNavigate, Link } from "react-router-dom";
+import Swal from "sweetalert2";
 import NavBar from "../NavBar/NavBarShop";
 import Footer from "../Footer/Footer";
-import TableCell from "@mui/material/TableCell";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import Table from "@mui/material/Table";
+import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import Swal from "sweetalert2";
-import { useAuth0 } from "@auth0/auth0-react";
+import Button from "@material-ui/core/Button";
 import style from "../../Components/Providers/ProvidersCard.module.css";
 import styles from "./AdminDashboard.module.css";
 
 export default function ProductsList() {
-  const navigate = useNavigate();
-  const { user } = useAuth0();
-
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const users = useSelector((state) => state.owners);
   const reviews = useSelector((state) => state.reviews);
 
@@ -34,9 +31,7 @@ export default function ProductsList() {
     dispatch(getReviews());
   }, [dispatch]);
 
-  useEffect(() => {}, [users, reviews]);
-
-  const providers = useSelector((state) => state.providers);
+  useEffect(() => { }, [users, reviews]);
 
   function hired(id) {
     localStorage.setItem("idUser", id);
@@ -88,7 +83,6 @@ export default function ProductsList() {
     { field: "email", headerName: "Email", minWidth: 200 },
     { field: "name", headerName: "Nombre", minWidth: 150 },
     { field: "lastName", headerName: "Apellido", minWidth: 150 },
-    // { field: "service", headerName: "Ofrece Servicio", minWidth: 150 },
     {
       field: "raiting",
       renderCell: (cellValues) => {
@@ -105,26 +99,23 @@ export default function ProductsList() {
           );
         else return null;
       },
-      minWidth: 130,
+      minWidth: 130
     },
     { field: "", headerName: "", maxWidth: 80 },
-
-    // { field: "state", headerName: "Estado", minWidth: 150 },
     {
       field: "Servicios contratados",
       renderCell: (cellValues) => {
         return <Button onClick={() => hired(cellValues.id)}>VER</Button>;
       },
-      minWidth: 150,
+      minWidth: 150
     },
     {
       field: "Servicios ofrecidos",
       renderCell: (cellValues) => {
         return <Button onClick={() => offer(cellValues.id)}>VER</Button>;
       },
-      minWidth: 150,
+      minWidth: 150
     },
-
     { field: "ban", headerName: "Baneado", minWidth: 150 },
     {
       field: ban,
@@ -134,8 +125,8 @@ export default function ProductsList() {
         ) : (
           <Button onClick={() => ban(cellValues.row.email)}>Inactivar</Button>
         );
-      },
-    },
+      }
+    }
   ];
 
   const rows = users.map((us) => {
@@ -144,15 +135,14 @@ export default function ProductsList() {
       email: us.email,
       name: us.name,
       lastName: us.lastName,
-      // service: providers.find((el) => el.email === us.email) ? "SÍ" : "NO",
       "": (() => {
         let rev = reviews?.find((el) => el.providerEmail === us.email);
         return rev ? rev.review : null;
       })(),
-      // state: us.isActive ? "ACTIVO" : "INACTIVO",
-      ban: us.isBanned ? "BANEADO" : null,
+      ban: us.isBanned ? "BANEADO" : null
     };
   });
+
   function back() {
     navigate("/admin");
   }
@@ -161,25 +151,21 @@ export default function ProductsList() {
     <>
       <NavBar />
       <div className={styles.contenedor}>
-      <Table stickyHeader aria-label="sticky table">
-        <TableRow stickyHeader aria-label="sticky table">
-          <TableCell align="center" colSpan={7}>
-            Listado de yumpis registrados
-          </TableCell>
-        </TableRow>
-      </Table>
-
-      <div style={{ height: 375, width: "100%" }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          components={{ Toolbar: GridToolbar }}
-        />
+        <Table stickyHeader aria-label="sticky table">
+          <TableRow stickyHeader aria-label="sticky table">
+            <TableCell align="center" colSpan={7}>Listado de yumpis registrados</TableCell>
+          </TableRow>
+        </Table>
+        <div style={{ height: 375, width: "100%" }}>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            components={{ Toolbar: GridToolbar }}
+          />
+        </div>
+        <Button onClick={back}>Volver</Button>
       </div>
-      <Button onClick={back}>Volver</Button>
-      </div>
-      
       <Footer />
     </>
   );
-}
+};
