@@ -7,12 +7,12 @@ import style from "./About.module.css";
 export default function About() {
   return (
     <main>
-      <NavBarShop />
+      <NavBarShop/>
       <div className={styleContainer.container}>
         <div className={style.container}>
           <h1 className={style.title}>¡Nosotros somos yumPaw!</h1>
           <div className={style.start}>
-            <img src="/assets/img/about-dog-1.png" alt="" />
+            <img src="/assets/img/about-dog-1.png" alt=""/>
             <p className={style.p}>
               Una plataforma pensada por y para el <strong>bienestar</strong> de
               tus mascotas, donde podrás encontrar las mejores alternativas para
@@ -37,10 +37,10 @@ export default function About() {
                 habitual.
               </p>
             </div>
-            <img src="/assets/img/about-dog-2.png" alt="" />
+            <img src="/assets/img/about-dog-2.png" alt=""/>
           </div>
           <div className={style.start}>
-            <img src="/assets/img/about-cat-3.png" alt="" />
+            <img src="/assets/img/about-cat-3.png" alt=""/>
             <div>
               <h3>¿Cuál es nuestro objetivo?</h3>
               <p>
@@ -54,7 +54,7 @@ export default function About() {
           </div>
         </div>
       </div>
-      <Footer />
+      <Footer/>
     </main>
   );
 }
