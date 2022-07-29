@@ -8,9 +8,9 @@ import {
   postSold,
 } from "../../../redux/actions/petshopActions";
 import { useAuth0 } from "@auth0/auth0-react";
-import style from "./Confirmación.module.css";
+import style from "./CartConfirmation.module.css";
 
-const Confirmación = () => {
+const CartConfirmation = () => {
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
 
@@ -101,4 +101,4 @@ const Confirmación = () => {
   );
 };
 
-export default Confirmación;
+export default CartConfirmation;

@@ -8,10 +8,10 @@ import {
   postSold,
 } from "../../../redux/actions/petshopActions";
 import { useAuth0 } from "@auth0/auth0-react";
-import style from "../../Shop/MercadoPago/Confirmación.module.css";
+import style from "../../Shop/MercadoPago/CartConfirmation.module.css";
 import { getEvents, putEvent } from "../../../redux/actions/ownProvActions";
 
-const Confirmation = () => {
+const ReserveConfirmation = () => {
   const navigate = useNavigate();
 
   const { user } = useAuth0();
@@ -80,4 +80,4 @@ const Confirmation = () => {
   );
 };
 
-export default Confirmation;
+export default ReserveConfirmation;

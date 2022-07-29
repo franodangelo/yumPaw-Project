@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
+
 import Landing from "./Components/Landing/Landing";
 import Shop from "./Components/Shop/Shop";
 import AddOwner from "./Components/Forms/AddOwner";
@@ -15,17 +17,15 @@ import Lodging from "./Components/Forms/Lodging";
 import Review from "./Components/Forms/Review";
 import MapView from "./Components/Map/MapView";
 import GeoLocProvider from "./Components/Map/GeoLocProvider";
-import "./App.css";
 import SalesReceipts from "./Components/Admin/SalesReceipts";
 import PostProducts from "./Components/Admin/PostProducts";
-import axios from "axios";
 import AdminDashboard from "./Components/Admin/AdminDashboard";
 import Ratings from "./Components/Providers/Ratings";
 import RatingsOwner from "./Components/Providers/RatingsOwner";
 import PutReview from "./Components/Providers/PutReview";
 import ProductDetail from "./Components/Shop/ProductDetail";
-import Confirmación from "./Components/Shop/MercadoPago/Confirmación";
-import Confirmation from "./Components/Providers/MercadoPago/Confirmation";
+import CartConfirmation from "./Components/Shop/MercadoPago/CartConfirmation";
+import ReserveConfirmation from "./Components/Providers/MercadoPago/ReserveConfirmation";
 import PurchaseConfirmation from "./Components/Shop/MercadoPago/PurchaseConfirmation";
 import ShoppingCart from "./Components/ShoppingCart/ShoppingCart";
 import Providers from "./Components/Providers/Providers";
@@ -55,6 +55,7 @@ import HiredServicesDetail from "./Components/Admin/HiredServicesDetail";
 import PaymentBookingCheckout from "./Components/Providers/PaymentBookingCheckout";
 import Banned from "./Views/Profile/Banned";
 import PendentMessages from "./Components/Chat/PendentMessages";
+import "./App.css";
 
 function App() {
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -225,13 +226,13 @@ function App() {
           <Route
             path="/confirmacion"
             element={
-              isAuthenticated && !isLoading ? <Confirmación /> : <Loader />
+              isAuthenticated && !isLoading ? <CartConfirmation /> : <Loader />
             }
           />
           <Route
             path="/confirmation"
             element={
-              isAuthenticated && !isLoading ? <Confirmation /> : <Loader />
+              isAuthenticated && !isLoading ? <ReserveConfirmation /> : <Loader />
             }
           />
           <Route
