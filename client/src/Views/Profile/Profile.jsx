@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import NavBarShop from "../../Components/NavBar/NavBarShop";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Footer from "../../Components/Footer/Footer";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { getOwners, getPets } from "../../redux/actions/ownProvActions";
+import { getPets } from "../../redux/actions/ownProvActions";
 import styleContainer from "../../Components/GlobalCss/InContainer.module.css";
 import style from "./Profile.module.css";
 import Swal from "sweetalert2";
 import InContainer from "../../Components/GlobalCss/InContainer.module.css";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
-import { addDays, getDay } from "date-fns";
+import { addDays } from "date-fns";
 
 export default function Profile() {
   const pets = useSelector((state) => state.pets);
@@ -33,7 +33,7 @@ export default function Profile() {
           "https://proyecto-grupal.herokuapp.com/providers?filter=&order=ASC"
         )
         .then((info) => {
-          let data = info.data.find((x) => x.email === user.email);
+          let data = info.data.find(u => u.email === user.email);
           if (data && data.schedule) {
             setAbleDays(data.schedule);
           }
@@ -45,9 +45,8 @@ export default function Profile() {
     if (isAuthenticated) {
       axios
         .get("https://proyecto-grupal.herokuapp.com/owners")
-        .then((x) => {
-          const userdb = x.data.find((x) => x.email === user.email);
-          console.log(userdb);
+        .then(u => {
+          const userdb = u.data.find(u => u.email === user.email);
           setUser({
             nombre: user.name,
             picture:
@@ -57,17 +56,16 @@ export default function Profile() {
             email: user.email,
             pets: userdb ? userdb.pets : [],
             address: userdb.address,
-            isAdmin: userdb.isAdmin,
+            isAdmin: userdb.isAdmin
           });
-          console.log("userdb", userdb);
         })
         .then(() => {
           return axios.get("https://proyecto-grupal.herokuapp.com/events");
         })
-        .then((x) => {
-          setEventsOwner(x.data.filter((x) => x.ownerEmail === user.email));
+        .then(e => {
+          setEventsOwner(e.data.filter(e => e.ownerEmail === user.email));
           setEventsProvider(
-            x.data.filter((x) => x.providerEmail === user.email)
+            e.data.filter(e => e.providerEmail === user.email)
           );
         });
     }
@@ -79,45 +77,39 @@ export default function Profile() {
         .get(
           "https://proyecto-grupal.herokuapp.com/providers?filter=&order=ASC"
         )
-        .then((x) => {
-          let providerCheck = x.data.find((x) => x.email === user.email);
-          console.log(providerCheck);
+        .then(p => {
+          let providerCheck = p.data.find(p => p.email === user.email);
           if (providerCheck) {
             setIsProvider(true);
           }
-
           if (providerCheck && providerCheck.service[0] === "paseo") {
             providerCheck = {
               ...providerCheck,
-              schedule: providerCheck.schedule.map((x) => JSON.parse(x)),
+              schedule: providerCheck.schedule.map(p => JSON.parse(p)),
             };
             setIsProvider(true);
             setProviderInfo(providerCheck);
-            console.log(providerCheck);
           } else if (providerCheck && providerCheck.service[0] === "hospedaje")
             setProviderInfo(providerCheck);
         });
     }
   }, [user]);
-
   async function byePet(id) {
     await axios.delete(`https://proyecto-grupal.herokuapp.com/pets/${id}`, {
       isActive: false,
     });
     dispatch(getPets());
   }
-
   function myServices() {
     navigate("/mis-servicios");
   }
-
   return (
     <main>
-      <NavBarShop />
+      <NavBarShop/>
       <div className={styleContainer.container}>
         <div className={InContainer.container}>
           <section className={style.infoProfile}>
-            <img src={userData.picture} alt="profilePicture" />
+            <img src={userData.picture} alt="profilePicture"/>
             <article className={style.profile}>
               <div className={style.editarperfil}>
                 <Link to="/mis-datos">
@@ -147,33 +139,25 @@ export default function Profile() {
                 </div>
                 <div className={style.service}>
                   <Link to="/calificaciones-dueno">
-                    <button className="secondaryButton">
-                      Reseñas enviadas
-                    </button>
+                    <button className="secondaryButton">Reseñas enviadas</button>
                   </Link>
                 </div>
                 {isProvider && (
                   <div className={style.service}>
                     <Link to="/calificaciones-yumpis">
-                      <button className="primaryButton">
-                        Reseñas recibidas
-                      </button>
+                      <button className="primaryButton">Reseñas recibidas</button>
                     </Link>
                   </div>
                 )}
                 {
                   <div className={style.service}>
-                    <button className="primaryButton" onClick={myServices}>
-                      Servicios contratados
-                    </button>
+                    <button className="primaryButton" onClick={myServices}>Servicios contratados</button>
                   </div>
                 }
                 {!isProvider && (
                   <div className={style.service}>
                     <Link to="/servicio">
-                      <button className="primaryButton">
-                        Ofrecer servicio
-                      </button>
+                      <button className="primaryButton">Ofrecer servicio</button>
                     </Link>
                   </div>
                 )}
@@ -185,31 +169,26 @@ export default function Profile() {
             providerInfo.service[0] === "hospedaje" && (
               <section className={style.mainInfoProfile}>
                 <div>
-                  <h2 className={style.dayTitle} style={{ display: "block" }}>
-                    Mis días de trabajo
-                  </h2>
+                  <h2 className={style.dayTitle} style={{ display: "block" }}>Mis días de trabajo</h2>
                   <DatePicker
-                    // filterDate={disableDates}
                     includeDates={
                       ableDays && ableDays.length
-                        ? ableDays.map((x) => {
-                            const dayTemp = x.split("/")[0];
-                            const monthTemp = x.split("/")[1];
-                            let newDate = x.split("/");
+                        ? ableDays.map(ad => {
+                            const dayTemp = ad.split("/")[0];
+                            const monthTemp = ad.split("/")[1];
+                            let newDate = ad.split("/");
                             newDate[0] = monthTemp;
                             newDate[1] = dayTemp;
                             return addDays(new Date(newDate.join("/")), 0);
                           })
                         : []
-                    } //'06/31/2022'
+                    }
                     inline
                   />
                   <Link to="/mis-horarios-hospedaje">
                     <button className="terciaryButton">Editar horarios</button>
                   </Link>
                 </div>
-
-                {console.log(providerInfo)}
               </section>
             )}
           {providerInfo && providerInfo.service[0] === "hospedaje" && (
@@ -242,77 +221,76 @@ export default function Profile() {
             providerInfo.schedule &&
             providerInfo.service[0] === "paseo" && (
               <section className={style.mainInfoProfile}>
-                <h2 style={{ display: "block" }}>Mis días de trabajo</h2>
-                <br />
-                <br />
-                {console.log(providerInfo.schedule)}
+                <h2 style={{display:"block"}}>Mis días de trabajo</h2>
+                <br/>
+                <br/>
                 <div>
                   {providerInfo.schedule[0] &&
                     providerInfo.schedule[0].lunes &&
-                    providerInfo.schedule[0].lunes.map((x) => (
+                    providerInfo.schedule[0].lunes.map(p => (
                       <div>
                         <h3>Lunes</h3>
-                        <p>{x}</p>
+                        <p>{p}</p>
                       </div>
                     ))}
                 </div>
                 <div>
                   {providerInfo.schedule[1] &&
                     providerInfo.schedule[1].martes &&
-                    providerInfo.schedule[1].martes.map((x) => (
+                    providerInfo.schedule[1].martes.map(p => (
                       <div>
                         <h3>Martes</h3>
-                        <p>{x}</p>
+                        <p>{p}</p>
                       </div>
                     ))}
                 </div>
                 <div>
                   {providerInfo.schedule[2] &&
                     providerInfo.schedule[2].miercoles &&
-                    providerInfo.schedule[2].miercoles.map((x) => (
+                    providerInfo.schedule[2].miercoles.map(p => (
                       <div>
                         <h3>Miercoles</h3>
-                        <p>{x}</p>
+                        <p>{p}</p>
                       </div>
                     ))}
                 </div>
                 <div>
                   {providerInfo.schedule[3] &&
                     providerInfo.schedule[3].jueves &&
-                    providerInfo.schedule[3].jueves.map((x) => (
+                    providerInfo.schedule[3].jueves.map(p => (
                       <div>
                         <h3>Jueves</h3>
-                        <p>{x}</p>
+                        <p>{p}</p>
                       </div>
                     ))}
                 </div>
                 <div>
                   {providerInfo.schedule[4] &&
                     providerInfo.schedule[4].viernes &&
-                    providerInfo.schedule[4].viernes.map((x) => (
+                    providerInfo.schedule[4].viernes.map(p => (
                       <div>
                         <h3>Viernes</h3>
-                        <p>{x}</p>
+                        <p>{p}</p>
                       </div>
                     ))}
                 </div>
                 <div>
                   {providerInfo.schedule[5] &&
                     providerInfo.schedule[5].sabado &&
-                    providerInfo.schedule[5].sabado.map((x) => (
+                    providerInfo.schedule[5].sabado.map(p => (
                       <div>
                         <h3>Sabado</h3>
-                        <p>{x}</p>
+                        <p>{p}</p>
                       </div>
                     ))}
                 </div>
                 <div>
                   {providerInfo.schedule[6] &&
                     providerInfo.schedule[6].domingo &&
-                    providerInfo.schedule[6].domingo.map((x) => (
+                    providerInfo.schedule[6].domingo.map(p => (
                       <div>
                         <h3>Domingo</h3>
-                        <p>{x}</p>
+                        <p>{p}</p>
                       </div>
                     ))}
                 </div>
@@ -327,27 +305,27 @@ export default function Profile() {
             </div>
             <article className={style.petsProfile}>
               {userData.pets && userData.pets.length > 0
-                ? userData.pets.map((x, y) => {
+                ? userData.pets.map((u, k) => {
                     if (x.isActive) {
                       return (
-                        <div className={style.petInfo} key={y}>
+                        <div className={style.petInfo} key={k}>
                           <div className={style.profilePictureCont}>
                             <img
-                              src={x.profilePicture}
+                              src={u.profilePicture}
                               alt="profilePicture"
                               className={style.profilePicture}
                             />
                           </div>
                           <div className={style.petData}>
-                            <h2 className={style.titulo}>{x.name}</h2>
+                            <h2 className={style.titulo}>{u.name}</h2>
                             <h4 className={style.race}>
                               {" "}
-                              Raza: <span className={style.span}>{x.race}</span>
+                              Raza: <span className={style.span}>{u.race}</span>
                             </h4>
                             <p className={style.aboutDog}>
-                              Sobre {x.name}:{" "}
+                              Sobre {u.name}:{" "}
                               <span className={style.span}>
-                                {x.description}
+                                {u.description}
                               </span>
                             </p>
                           </div>
@@ -359,7 +337,7 @@ export default function Profile() {
                                   "¿Estás seguro que querés eliminar a esta mascota?",
                                 showDenyButton: true,
                                 confirmButtonText: "Eliminar",
-                                denyButtonText: `Cancelar`,
+                                denyButtonText: `Cancelar`
                               }).then(async (result) => {
                                 if (result.isConfirmed) {
                                   Swal.fire(
@@ -367,7 +345,7 @@ export default function Profile() {
                                     "",
                                     "success"
                                   );
-                                  byePet(x.id);
+                                  byePet(u.id);
                                 } else if (result.isDenied) {
                                   Swal.fire("", "", "info");
                                 }
@@ -381,65 +359,22 @@ export default function Profile() {
                     }
                   })
                 : null}
-
-              {/* {providerInfo &&
-            providerInfo.schedule &&
-            providerInfo.service[0] === "hospedaje" && (
-              <section className={style.mainInfoProfile}>
-                <h2 style={{ display: "block" }}>Mis días de trabajo</h2>
-                <br />
-                <br />
-                {console.log(providerInfo)}
-                <div>{providerInfo.schedule.lunes && <h3>Lunes</h3>}</div>
-                <div>{providerInfo.schedule.martes && <h3>Martes</h3>}</div>
-                <div>
-                  {providerInfo.schedule.miercoles && <h3>Miércoles</h3>}
-                </div>
-                <div>{providerInfo.schedule.jueves && <h3>Jueves</h3>}</div>
-                <div>{providerInfo.schedule.viernes && <h3>Viernes</h3>}</div>
-                <div>{providerInfo.schedule.sabado && <h3>Sábado</h3>}</div>
-                <div>{providerInfo.schedule.domingo && <h3>Domingo</h3>}</div>
-                <Link to="/mis-horarios-hospedaje">
-                  <button className="terciaryButton">Editar horarios</button>
-                </Link>
-              </section>
-            )} */}
-
               <Link to="/agregar-mascota">
                 <button className="primaryButton">Agregar mascota</button>
               </Link>
             </article>
           </section>
-          {/* {providerInfo&& providerInfo.schedule && providerInfo.service[0] === 'paseo' &&<section className={style.mainInfoProfile}>
-          <h2 style={{display:"block"}}>Mis horarios de trabajo</h2>
-          <br/>
-          <br/>
-          {/* {console.log(providerInfo)}
-          <div style={{display:'block'}}><h3>lunes</h3>{providerInfo.schedule.lunes.length>0 &&providerInfo.schedule.lunes.map(x=><div><h4>{x}</h4></div>)}</div>
-          <div><h3>martes</h3>{providerInfo.schedule.martes.length>0&&providerInfo.schedule.martes.map(x=><div><h4>{x}</h4></div>)}</div>
-          <div><h3>miércoles</h3>{providerInfo.schedule.miercoles.length>0&&providerInfo.schedule.miercoles.map(x=><div><h4>{x}</h4></div>)}</div>
-          <div><h3>jueves</h3>{providerInfo.schedule.jueves.length>0&&providerInfo.schedule.jueves.map(x=><div><h4>{x}</h4></div>)}</div>
-          <div><h3>viernes</h3>{providerInfo.schedule.viernes.length>0&&providerInfo.schedule.viernes.map(x=><div><h4>{x}</h4></div>)}</div>
-          <div><h3>sábado</h3>{providerInfo.schedule.sabado.length>0&&providerInfo.schedule.sabado.map(x=><div><h4>{x}</h4></div>)}</div>
-          <div><h3>domingo</h3>{providerInfo.schedule.domingo.length>0&&providerInfo.schedule.domingo.map(x=><div><h4>{x}</h4></div>)}</div>
-        </section>} */}
-
           <section>
             <div className={style.addPet}></div>
             <article className={style.petsProfile}>
               {userData.pets && userData.pets.length > 0
-                ? userData.pets.map((x, y) => {
-                    if (x.isActive) {
+                ? userData.pets.map(u => {
+                    if (u.isActive) {
                       return (
                         <div>
-                          {/* <h3>Mascota: {x.petName}</h3>
-                          <h4>
-                            {x.eventType} con {x.providerName}
-                          </h4> */}
-                          {/* <p>
-                        Fecha del evento: {x.date.day} {x.date.realDate} -{" "}
-                        {x.date.hour}
-                      </p> */}
+                          <h3>Mascota: {u.petName}</h3>
+                          <h4>{u.eventType} con {u.providerName}</h4>
+                          <p>Fecha del evento: {u.date.day} {u.date.realDate} -{" "}{u.date.hour}</p>
                         </div>
                       );
                     }
@@ -452,17 +387,12 @@ export default function Profile() {
               )}
             </article>
             {isProvider && eventsProvider
-              ? eventsProvider.map((x) => {
+              ? eventsProvider.map(e => {
                   return (
                     <div>
-                      <h3>
-                        {x.eventType} acordado con {x.ownerName}
-                      </h3>
-                      <p>Mascota: {x.petName}</p>
-                      <p>
-                        Fecha del evento: {x.date.day} {x.date.realDate} -{" "}
-                        {x.date.hour}
-                      </p>
+                      <h3>{e.eventType} acordado con {e.ownerName}</h3>
+                      <p>Mascota: {e.petName}</p>
+                      <p>Fecha del evento: {e.date.day} {e.date.realDate} -{" "}{e.date.hour}</p>
                     </div>
                   );
                 })
@@ -470,7 +400,7 @@ export default function Profile() {
           </section>
         </div>
       </div>
-      <Footer />
+      <Footer/>
     </main>
   );
 }
