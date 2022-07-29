@@ -3,7 +3,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export const Quesos = () => {
+export const UserType = () => {
     const { user } = useAuth0();
     const navigate = useNavigate()
     const ownerRegister = async () => {

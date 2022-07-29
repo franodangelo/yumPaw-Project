@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 
-export default function PendentMessages(){
+export default function PendingMessages(){
     const {user} = useAuth0()
     const [pendingMessagesOwner, setPendingMessagesOwner] = useState([])
     const [pendingMessagesProvider, setPendingMessagesProvider] = useState([])
