@@ -1,18 +1,18 @@
 import {
     GET_OWNERS,
-    GET_NAME_OWNER,
+    GET_OWNER_BY_NAME,
     FILTER_BY_OWNER,
     GET_PROVIDERS,
-    ID_PROVIDER,
+    GET_PROVIDER_BY_ID,
     SORT_PROVIDER_PRICE,
     FILTER_PROVIDER_PRICE,
     GET_EVENTS,
     GET_PETS,
-    GET_SOLDS,
+    GET_SALES,
     GET_REVIEWS,
-    ID_OWNER,
-
+    GET_OWNER_BY_ID
 } from '../actions-type/ownProvActionTypes';
+
 import {
     GET_PRODUCTS,
     SEARCHBAR_PRODUCTS,
@@ -27,6 +27,7 @@ import {
     DELETE_ITEM,
     CHARGE_FAVORITES
 } from '../actions-type/petshopActionsTypes';
+
 import { TYPES } from '../actions/shoppingActions';
 
 const initialState = {
@@ -37,14 +38,14 @@ const initialState = {
     products: [],
     filteredProducts: [],
     cart: [],
-    productDetail:[],
+    productDetail: [],
     pets: [],
-    favorites:[],
-    filteredProviders:[],
+    favorites: [],
+    filteredProviders: [],
     events: [],
     selectedProduct: null,
     selectedEvent: null,
-    solds: [],
+    sells: [],
     reviews: [],
     groupEvents: []
 };
@@ -122,16 +123,16 @@ function rootReducer(state = initialState, action) {
                 filteredProviders: action.payload
             }
 
-        case GET_NAME_OWNER:
+        case GET_OWNER_BY_NAME:
             return {
                 ...state,
                 copyOwners: action.payload,
             }
 
-        case GET_SOLDS:
+        case GET_SALES:
             return {
                 ...state,
-                solds: action.payload,
+                sells: action.payload,
             }    
     
 
@@ -209,13 +210,13 @@ function rootReducer(state = initialState, action) {
                 productDetail: [action.payload]
             }
 
-        case ID_PROVIDER:
+        case GET_PROVIDER_BY_ID:
             return{
                 ...state,
                 providers: [action.payload]
             }
             
-        case ID_OWNER:
+        case GET_OWNER_BY_ID:
             return{
                 ...state,
                 owners: [action.payload]

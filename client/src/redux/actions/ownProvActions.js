@@ -1,76 +1,114 @@
 import axios from 'axios';
 import {
     GET_OWNERS,
-    GET_NAME_OWNER,
+    GET_OWNER_BY_NAME,
     FILTER_BY_OWNER,
     GET_PROVIDERS,
-    ID_PROVIDER,
+    GET_PROVIDER_BY_ID,
     SORT_PROVIDER_PRICE,
     FILTER_PROVIDER_PRICE,
     GET_EVENTS,
     GET_PETS,
-    GET_SOLDS,
+    GET_SALES,
     GET_REVIEWS,
-    ID_OWNER
+    GET_OWNER_BY_ID,
+    SELECTED_EVENT,
+    GROUP_EVENTS
 } from '../actions-type/ownProvActionTypes';
 
 export function getOwners() {
     return async function (dispatch) {
-        var json = await axios.get(`https://proyecto-grupal.herokuapp.com/owners`);
-        return dispatch({
-            type: GET_OWNERS,
-            payload: json.data
-        })
-    }
-};
-
-
-export function getProviders() {
-    return async function (dispatch) {
-        var json = await axios.get(`https://proyecto-grupal.herokuapp.com/providers`)
-        return dispatch({
-            type: GET_PROVIDERS,
-            payload: json.data
-        })
-    }
-};
-
-export function getProviderById(email) {
-    return function(dispatch){
-        axios.get(`https://proyecto-grupal.herokuapp.com/providers/${email}`)
-        .then(response => {
-            dispatch({
-                type: ID_PROVIDER,
+        try {
+            let response = await axios.get(`https://proyecto-grupal.herokuapp.com/owners`);
+            return dispatch({
+                type: GET_OWNERS,
                 payload: response.data
             })
-        })
-    }
-};
-
-export function getNameOwner(name) {
-    return async function (dispatch) {
-        try {
-            var json = await axios.get(`https://proyecto-grupal.herokuapp.com/owners?name=${name}`);
-            return dispatch({
-                type: GET_NAME_OWNER,
-                payload: json.data
-            })
-        } catch (error) {
-            console.log(error);
+        } catch (err) {
+            console.log(err);
         }
     }
 };
 
-export function getSolds() {
+export function getOwnerByName(name) {
     return async function (dispatch) {
-        var json = await axios.get(`https://proyecto-grupal.herokuapp.com/solds`);
-        return dispatch({
-            type: GET_SOLDS,
-            payload: json.data
-        })
+        try {
+            let response = await axios.get(`https://proyecto-grupal.herokuapp.com/owners?name=${name}`);
+            return dispatch({
+                type: GET_OWNER_BY_NAME,
+                payload: response.data
+            })
+        } catch (err) {
+            console.log(err);
+        }
     }
 };
 
+export function putOwner(email, modification) {
+    return async function () {
+        try {
+            await axios.put(`https://proyecto-grupal.herokuapp.com/owners/${email}`, modification);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+};
+
+export function getOwnerById(email) {
+    return async function (dispatch) {
+        try {
+            let response = await axios.get(`https://proyecto-grupal.herokuapp.com/owners/${email}`);
+            return dispatch({
+                type: GET_OWNER_BY_ID,
+                payload: response.data
+            })
+        } catch (err) {
+            console.log(err);
+        }
+    }
+};
+
+export function getProviders() {
+    return async function (dispatch) {
+        try {
+            let response = await axios.get(`https://proyecto-grupal.herokuapp.com/providers`);
+            return dispatch({
+                type: GET_PROVIDERS,
+                payload: response.data
+            })
+        } catch (err) {
+            console.log(err);
+        }
+    }
+};
+
+export function getProviderById(email) {
+    return async function (dispatch) {
+        try {
+            let response = axios.get(`https://proyecto-grupal.herokuapp.com/providers/${email}`);
+            return dispatch({
+                type: GET_PROVIDER_BY_ID,
+                payload: response.data
+            })
+        } catch (err) {
+            console.log(err);
+        }
+    }
+};
+
+export function getSales() {
+    return async function (dispatch) {
+        try {
+            let response = await axios.get(`https://proyecto-grupal.herokuapp.com/solds`);
+            return dispatch({
+                type: GET_SALES,
+                payload: response.data
+            })
+        } catch (err) {
+            console.log(err);
+        }
+    }
+};
 
 export function filterByOwner(payload) {
     return {
@@ -82,134 +120,118 @@ export function filterByOwner(payload) {
 export function putProvider(modification) {
     return async function () {
         try {
-            await axios.put(`https://proyecto-grupal.herokuapp.com/providers/`, modification)
-        } catch (error) {
-            console.log(error)
+            await axios.put(`https://proyecto-grupal.herokuapp.com/providers/`, modification);
+        } catch (err) {
+            console.log(err);
         }
     }
 };
 
-export function postPet(email, modification) {
+export function postPet(newPet) {
     return async function () {
         try {
-            console.log(email)
-            await axios.post(`https://proyecto-grupal.herokuapp.com/pets`, modification)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-};
-
-export function putOwnerInfo(email, modification) {
-    return async function () {
-        try {
-            console.log(email)
-            await axios.put(`https://proyecto-grupal.herokuapp.com/owners/${email}`, modification)
-        } catch (error) {
-            console.log(error)
+            await axios.post(`https://proyecto-grupal.herokuapp.com/pets`, newPet);
+        } catch (err) {
+            console.log(err);
         }
     }
 };
 
 export function getPets() {
     return async function (dispatch) {
-        var json = await axios.get(`https://proyecto-grupal.herokuapp.com/pets`);
-        return dispatch({
-            type: GET_PETS,
-            payload: json.data
-        })
+        try {
+            let response = await axios.get(`https://proyecto-grupal.herokuapp.com/pets`);
+            return dispatch({
+                type: GET_PETS,
+                payload: response.data
+            })
+        } catch (err) {
+            console.log(err);
+        }
     }
 };
-
 
 export function postProvider(newProvider) {
     return async function () {
         try {
-            await axios.post(`https://proyecto-grupal.herokuapp.com/providers`, newProvider)
-        } catch (error) {
-            console.log(error)
+            await axios.post(`https://proyecto-grupal.herokuapp.com/providers`, newProvider);
+        } catch (err) {
+            console.log(err)
         }
-    }
-}
-
-
-export function sortByProviderPrice(payload){
-    return {
-        type: SORT_PROVIDER_PRICE,
-        payload,
     }
 };
 
-export function filterByProviderService(payload){
+export function sortByProviderPrice(payload) {
+    return {
+        type: SORT_PROVIDER_PRICE,
+        payload
+    }
+};
+
+export function filterByProviderService(payload) {
     return {
         type: FILTER_PROVIDER_PRICE,
-        payload,
+        payload
     }
 };
 
 export function getEvents() {
     return async function (dispatch) {
-        var json = await axios.get(`https://proyecto-grupal.herokuapp.com/events`);
-        return dispatch({
-            type: GET_EVENTS,
-            payload: json.data
-        })
+        try {
+            let response = await axios.get(`https://proyecto-grupal.herokuapp.com/events`);
+            return dispatch({
+                type: GET_EVENTS,
+                payload: response.data
+            })
+        } catch (err) {
+            console.log(err);
+        }
     }
 };
 
 export function postEvent(newEvent) {
     return async function () {
         try {
-            await axios.post(`https://proyecto-grupal.herokuapp.com/events`, newEvent)
-        } catch (error) {
-            console.log(error)
+            await axios.post(`https://proyecto-grupal.herokuapp.com/events`, newEvent);
+        } catch (err) {
+            console.log(err);
         }
     }
 };
 
 export function getReviews() {
     return async function (dispatch) {
-        var json = await axios.get(`https://proyecto-grupal.herokuapp.com/reviews`);
-        return dispatch({
-            type: GET_REVIEWS,
-            payload: json.data
-        })
+        try {
+            let response = await axios.get(`https://proyecto-grupal.herokuapp.com/reviews`);
+            return dispatch({
+                type: GET_REVIEWS,
+                payload: response.data
+            })
+        } catch (err) {
+            console.log(err);
+        }
     }
 };
 
 export function putEvent(id, modification) {
     return async function () {
         try {
-            await axios.put(`https://proyecto-grupal.herokuapp.com/events/${id}`, modification)
-        } catch (error) {
-            console.log(error)
+            await axios.put(`https://proyecto-grupal.herokuapp.com/events/${id}`, modification);
+        } catch (err) {
+            console.log(err);
         }
     }
 };
 
-
-export function selectedEvent(payload){
+export function selectedEvent(payload) {
     return {
-        type: 'SELECTED_EVENT',
-        payload,
+        type: SELECTED_EVENT,
+        payload
     }
-}
+};
 
-
-export function groupEvents(){
-    return{
-        type: 'GROUP_EVENTS'
-    }
-}
-
-export function getOwnerById(email) {
-    return function(dispatch){
-        axios.get(`https://proyecto-grupal.herokuapp.com/owners/${email}`)
-        .then(response => {
-            dispatch({
-                type: ID_OWNER,
-                payload: response.data
-            })
-        })
+export function groupEvents() {
+    return {
+        type: GROUP_EVENTS
     }
 };
