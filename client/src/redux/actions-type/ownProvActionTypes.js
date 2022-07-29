@@ -11,5 +11,5 @@ export const GET_PETS = 'GET_PETS';
 export const GET_EVENTS = 'GET_EVENTS';
 export const GET_SALES = 'GET_SALES'
 export const GET_REVIEWS ='GET_REVIEWS';
-export const SELECTED_EVENTS = 'SELECTED_EVENTS';
+export const SELECTED_EVENT = 'SELECTED_EVENT';
 export const GROUP_EVENTS = 'GROUP_EVENTS';
