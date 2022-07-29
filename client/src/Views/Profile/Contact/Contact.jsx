@@ -1,15 +1,14 @@
 import React from "react";
-import { Form, Button } from "semantic-ui-react";
-import { ToastContainer, toast } from "react-toastify";
+import { Form } from "semantic-ui-react";
 import NavBarShop from "../../../Components/NavBar/NavBarShop";
 import Footer from "../../../Components/Footer/Footer";
 import styleContainer from "../../../Components/GlobalCss/InContainer.module.css";
 import styles from "./Contact.module.css"
 
-export default function Contact({ user }) {
+export default function Contact() {
   return (
     <main>
-      <NavBarShop />
+      <NavBarShop/>
       <div className={styleContainer.container}>
         <div className={styles.container}>
           <h1>¡Nos encanta estar comunicados!</h1>
@@ -34,7 +33,7 @@ export default function Contact({ user }) {
           </div>
         </div>
       </div>
-      <Footer />
+      <Footer/>
     </main>
   );
 }
