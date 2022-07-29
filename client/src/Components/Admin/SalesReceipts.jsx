@@ -1,7 +1,7 @@
 import React from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useSelector, useDispatch } from "react-redux";
-import { getSolds } from "../../redux/actions/ownProvActions";
+import { getSales } from "../../redux/actions/ownProvActions";
 import { useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,7 @@ export default function SalesReceipts() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getSolds());
+    dispatch(getSales());
   }, [dispatch]);
 
   const solds = useSelector((state) => state.solds);

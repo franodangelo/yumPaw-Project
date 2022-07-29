@@ -5,7 +5,7 @@ import { Button } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../NavBar/NavBarShop";
 import Footer from "../Footer/Footer";
-import { getSolds } from "../../redux/actions/ownProvActions";
+import { getSales } from "../../redux/actions/ownProvActions";
 
 
 export default function SaleDetail(){
@@ -16,7 +16,7 @@ export default function SaleDetail(){
  console.log(id)
   
   useEffect(()=>{
-    dispatch(getSolds())
+    dispatch(getSales())
   },[dispatch])
 
     const sold = useSelector(state => state.solds)
