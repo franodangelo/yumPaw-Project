@@ -1,24 +1,24 @@
 .favTitle {
-    width: 100%;
     display: flex;
-    justify-content: center;
-    font-size: var(--mediumFont);
+    width: 100%;
     padding: 20px;
     margin: 0;
+    justify-content: center;
+    font-size: var(--mediumFont);
     color: var(--black);
-}
+};
 
 .sectionFav h1 {
     font-weight: 800;
-}
+};
 
 .gridFav {
     display: flex;
     flex-direction: column;
-    gap: 40px;
     margin-top: 12px;
     margin-bottom: var(--margin64);
-}
+    gap: 40px;
+};
 
 .card {
     display: flex;
@@ -28,7 +28,7 @@
     padding: 12px 22px;
     border: 1px solid #bbb7ae;
     border-radius: 8px;
-}
+};
 
 .favImg {
     display: flex;
@@ -40,21 +40,21 @@
     object-fit: cover;
     object-position: center;
     border-radius: 8px;
-}
+};
 
 .nameFav {
     color: var(--black);
     font-size: var(--p);
     text-transform: uppercase;
-}
+};
 
 .available {
     color: var(--darkGray);
     font-size: var(--p);
-}
+};
 
 .cardData {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
+};
