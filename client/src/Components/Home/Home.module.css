@@ -1,4 +1,4 @@
-.container{
+.container {
   margin-top: var(--margin64);
 }
 
@@ -18,6 +18,6 @@
   margin: 0;
 }
 
-.stickyFooter{
+.stickyFooter {
   margin-top: auto;
 }

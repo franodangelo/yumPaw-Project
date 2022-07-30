@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import styles from "../Home/Home.module.css";
-import NavBarShop from "../NavBar/NavBarShop";
-import inContainer from "../GlobalCss/InContainer.module.css";
-import HomeCard from "./HomeCard";
-import Footer from "../Footer/Footer";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useDispatch } from "react-redux";
+import NavBarShop from "../NavBar/NavBarShop";
+import HomeCard from "./HomeCard";
+import Footer from "../Footer/Footer";
+import inContainer from "../GlobalCss/InContainer.module.css";
+import styles from "../Home/Home.module.css";
 
-const Home = () => {
+export default function Home() {
   const { user, isAuthenticated } = useAuth0();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [userData, setUserData] = useState({});
   const [location, setLocation] = useState({
@@ -19,13 +18,10 @@ const Home = () => {
     longitude: 0,
   });
 
-  console.log("USUARIO", user);
-
   useEffect(() => {
     if (user) {
       axios.get("https://proyecto-grupal.herokuapp.com/owners").then((x) => {
         const userdb = x.data.find((x) => x.email === user.email);
-        console.log("USUARIO ENTRA", userdb);
         if (userdb) {
           setUserData({
             nombre: user.name,
@@ -37,49 +33,39 @@ const Home = () => {
             pets: userdb.pets,
             address: userdb.address,
             isAdmin: userdb.isAdmin,
-            isBanned: userdb.isBanned,
+            isBanned: userdb.isBanned
           });
         }
       });
     }
-
-    // axios.get(`https://proyecto-grupal.herokuapp.com/owners/getFavorites/${user.email}`).then(x=>{
-    //     setProductsFavNumber(x.data)})
   }, [dispatch, user]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       function (position) {
-        console.log(
-          "getCurrentPosition: ",
-          position.coords.latitude,
-          position.coords.longitude
-        );
         setLocation({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         });
       },
-      function (error) {
-        console.log(error);
+      function (err) {
+        console.log(err);
       },
       {
-        enableHighAccuracy: true, // Cada vez que pueda extraerá desde el GPS info extra.
+        enableHighAccuracy: true
       }
     );
   }, []);
 
   useEffect(() => {
-    console.log("soy las cordinadas", location);
     if (user && location.latitude !== 0) {
       let owner = {
         email: user.email,
         name: user.given_name,
         lastName: user.family_name,
         latitude: location.latitude,
-        longitude: location.longitude,
+        longitude: location.longitude
       };
-      console.log("TA BANEAU", owner);
       axios.post("https://proyecto-grupal.herokuapp.com/owners", owner);
     }
   }, [user, location]);
@@ -104,12 +90,9 @@ const Home = () => {
           </div>
         </div>
       </div>
-
       <div className={styles.stickyFooter}>
         <Footer />
       </div>
     </div>
   );
 };
-
-export default Home;

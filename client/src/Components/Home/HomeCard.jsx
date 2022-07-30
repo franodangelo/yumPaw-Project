@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "../Home/HomeCard.module.css";
 
-const HomeCard = (props) => {
+export default function HomeCard(props) {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
@@ -11,5 +11,3 @@ const HomeCard = (props) => {
     </div>
   );
 };
-
-export default HomeCard;
