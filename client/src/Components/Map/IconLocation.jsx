@@ -8,5 +8,5 @@ export const IconLocation = new L.Icon({
     shadowUrl: null,
     shadowSize: null,
     shadowAnchor: null,
-    iconSize: [50, 45],
-    });
+    iconSize: [50, 45]
+});
