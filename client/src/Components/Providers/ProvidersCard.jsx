@@ -8,7 +8,7 @@ export default function ProvidersCard({
   profilePicture,
   price,
   service,
-  stars,
+  stars
 }) {
   return (
     <div className={styles.container}>
@@ -39,14 +39,10 @@ export default function ProvidersCard({
               <h2 className={styles.cardTitle}>
                 {name} {lastName}
               </h2>
-              {/* <h4 className={styles.service}>{service}</h4> */}
             </div>
           </div>
           <div className={styles.buttonDiv}>
-          {/* <Link to={`/yumpis/${email}`}>
-            <button className='secondaryButton'>Ver detalle</button>
-          </Link> */}
-        </div>
+          </div>
         </div>
       </Link>
     </div>

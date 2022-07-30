@@ -1,9 +1,9 @@
-.container{
+.container {
     min-height: 70vh;
     display: flex;
     justify-content: center;
 }
 
-.contenedor{
+.contenedor {
     margin: 26px 0;
 }

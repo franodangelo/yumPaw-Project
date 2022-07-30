@@ -1,12 +1,12 @@
-.container{
+.container {
     min-height: 65vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.star{
+.star {
     background-color: unset;
-    color:black;
+    color: black;
     font-size: 40px;
 }

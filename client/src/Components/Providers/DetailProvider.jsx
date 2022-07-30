@@ -2,13 +2,12 @@ import React, { useEffect } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProviderById } from "../../redux/actions/ownProvActions";
-import NavBarShop from '../NavBar/NavBarShop';
-import Footer from "../Footer/Footer";
-import DetailProviderCard from "./DetailProviderCard";
-
-import styles from "../Shop/ProductDetail.module.css";
-import inContainer from "../GlobalCss/InContainer.module.css";
 import { cleanDetail } from "../../redux/actions/petshopActions";
+import NavBarShop from '../NavBar/NavBarShop';
+import DetailProviderCard from "./DetailProviderCard";
+import Footer from "../Footer/Footer";
+import inContainer from "../GlobalCss/InContainer.module.css";
+import styles from "../Shop/ProductDetail.module.css";
 
 export default function DetailProvider() {
     const dispatch = useDispatch();
@@ -16,13 +15,12 @@ export default function DetailProvider() {
     const provider = useSelector(state => state.providers);
     
     useEffect(() => {
-        dispatch(getProviderById(email))
+        dispatch(getProviderById(email));
     }, [dispatch, email]);
 
     useEffect(() => {
-        return ()=>dispatch(cleanDetail())
+        return ()=>dispatch(cleanDetail());
     }, [dispatch]);
-
 
     return (
         <div>
@@ -34,7 +32,6 @@ export default function DetailProvider() {
                 {!provider.length
                     ? "LOADING"
                     : provider.map((p) => {
-                        console.log("soy toda la info de este provider",p)
                         return (
                             <DetailProviderCard
                                 key={email}
@@ -60,5 +57,5 @@ export default function DetailProvider() {
             </div>
             <Footer />
         </div>
-    )
+    );
 };

@@ -1,24 +1,24 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import style from "../Providers/ProvidersCard.module.css";
-import styles from "./Ratings.module.css";
-import InContainer from "../GlobalCss/InContainer.module.css";
-import NavBar from "../NavBar/NavBarShop";
-import { Container } from "semantic-ui-react";
-import Footer from "../Footer/Footer";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Container } from "semantic-ui-react";
+import NavBar from "../NavBar/NavBarShop";
+import Footer from "../Footer/Footer";
+import InContainer from "../GlobalCss/InContainer.module.css";
+import styles from "./Ratings.module.css";
+import style from "../Providers/ProvidersCard.module.css";
 
-const Ratings = () => {
+export default function Ratings() {
   const { user, isAuthenticated } = useAuth0();
   const [reviews, setReviews] = useState([]);
   const [stars, setStars] = useState(0);
   const [quantityReviews, setquantityReviews] = useState(0);
+
   useEffect(() => {
     if (isAuthenticated) {
       axios.get("https://proyecto-grupal.herokuapp.com/reviews").then((x) => {
         let myreviews = x.data.filter((x) => x.provider.email === user.email);
-
         if (myreviews.length) {
           setReviews(myreviews);
           myreviews = myreviews.map((x) => x.review);
@@ -30,6 +30,7 @@ const Ratings = () => {
       });
     }
   }, [isAuthenticated]);
+
   return (
     <div>
       <NavBar />
@@ -54,41 +55,38 @@ const Ratings = () => {
                   <p className={style.star}>{stars === 5 ? "★" : "☆"}</p>
                 </div>
                 <h3 style={{ display: "inline" }}> ({quantityReviews})</h3>
-                <br />
-                <br />
                 <div style={{ marginBottom: 30 }}>
                   {reviews && reviews.length
                     ? reviews.map((x, y) => {
-                        return (
-                          <div key={y}>
-                            <hr />
-                            <div>
-                              <p className={style.star}>
-                                {x.review >= 1 ? "★" : "☆"}
-                              </p>
-                              <p className={style.star}>
-                                {x.review >= 2 ? "★" : "☆"}
-                              </p>
-                              <p className={style.star}>
-                                {x.review >= 3 ? "★" : "☆"}
-                              </p>
-                              <p className={style.star}>
-                                {x.review >= 4 ? "★" : "☆"}
-                              </p>
-                              <p className={style.star}>
-                                {x.review === 5 ? "★" : "☆"}
-                              </p>
-                            </div>
-                            <h4 style={{ display: "inline" }}>
-                              {x.owner.name} {x.owner.lastName}:
-                            </h4>
-                            <p style={{ display: "inline", color: "blue" }}>
-                              {" "}
-                              {x.message}
+                      return (
+                        <div key={y}>
+                          <div>
+                            <p className={style.star}>
+                              {x.review >= 1 ? "★" : "☆"}
+                            </p>
+                            <p className={style.star}>
+                              {x.review >= 2 ? "★" : "☆"}
+                            </p>
+                            <p className={style.star}>
+                              {x.review >= 3 ? "★" : "☆"}
+                            </p>
+                            <p className={style.star}>
+                              {x.review >= 4 ? "★" : "☆"}
+                            </p>
+                            <p className={style.star}>
+                              {x.review === 5 ? "★" : "☆"}
                             </p>
                           </div>
-                        );
-                      })
+                          <h4 style={{ display: "inline" }}>
+                            {x.owner.name} {x.owner.lastName}:
+                          </h4>
+                          <p style={{ display: "inline", color: "blue" }}>
+                            {" "}
+                            {x.message}
+                          </p>
+                        </div>
+                      );
+                    })
                     : null}
                 </div>
               </div>
@@ -100,5 +98,3 @@ const Ratings = () => {
     </div>
   );
 };
-
-export default Ratings;
