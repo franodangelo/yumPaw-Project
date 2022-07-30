@@ -1,44 +1,41 @@
-import React, { useEffect } from "react";
-import styles from "./NavBarShop.module.css";
-import OutContainer from "../GlobalCss/OutContainer.module.css";
-import { useAuth0 } from "@auth0/auth0-react";
-import Login from "../Auth0/Login";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addTofavorites, chargeCart } from "../../redux/actions/petshopActions";
 import axios from "axios";
-import DropdownMenu from "./DropdownMenu";
+import { useAuth0 } from "@auth0/auth0-react";
 import Swal from "sweetalert2";
+import { addTofavorites, chargeCart } from "../../redux/actions/petshopActions";
+import Login from "../Auth0/Login";
+import DropdownMenu from "./DropdownMenu";
+import OutContainer from "../GlobalCss/OutContainer.module.css";
+import styles from "./NavBarShop.module.css";
 
-function NavBar() {
+export default function NavBar() {
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useAuth0();
   const [total, setTotal] = useState(0);
   const [productsFavNumber, setProductsFavNumber] = useState(0);
   const [userData, setUser] = useState({});
-  const navigate = useNavigate()
   const state = useSelector((state) => {
     return state;
   });
   const [favorites, setFavorites] = useState([]);
+
   useEffect(() => {
     if (user && user.email) {
       axios
         .get(`https://proyecto-grupal.herokuapp.com/owners/getFavorites/${user.email}`)
-        .then((x) => {
-          console.log(x.data);
-          setFavorites(x.data);
-          dispatch(addTofavorites(x.data));
+        .then(f => {
+          setFavorites(f.data);
+          dispatch(addTofavorites(f.data));
         });
     }
   }, [user]);
 
   useEffect(() => {
     if (user) {
-      axios.get("https://proyecto-grupal.herokuapp.com/owners").then((x) => {
-        const userdb = x.data.find((x) => x.email === user.email);
+      axios.get("https://proyecto-grupal.herokuapp.com/owners").then(u => {
+        const userdb = u.data.find(u => u.email === user.email);
         if (userdb) {
           setUser({
             nombre: user.name,
@@ -48,13 +45,11 @@ function NavBar() {
                 : "/assets/img/notloged.png",
             email: user.email,
             pets: userdb.pets,
-            address: userdb.address,
+            address: userdb.address
           });
         }
       });
     }
-    // axios.get(`https://proyecto-grupal.herokuapp.com/owners/getFavorites/${user.email}`).then(x=>{
-    //     setProductsFavNumber(x.data)})
   }, [dispatch, user]);
 
   useEffect(() => {
@@ -77,23 +72,16 @@ function NavBar() {
     <div className={OutContainer.container}>
       <nav className={styles.nav}>
         <div className={styles.item}>
-          <NavLink to={user ? '/inicio' : '/'} className={styles.logoLink} >
-            yumPaw
-          </NavLink>
+          <NavLink to={user ? '/inicio' : '/'} className={styles.logoLink}>yumPaw</NavLink>
         </div>
         <div className={styles.item}>
-          <NavLink to="/nosotros" className={styles.navLink}>
-            Nosotros
-          </NavLink>
-          <NavLink to="/contacto" className={styles.navLink}>
-            Contacto
-          </NavLink>
-          <NavLink to={user?'/yumpis':'/'} className={styles.navLink} onClick={()=>{if(!user)Swal.fire('Necesitás iniciar sesión para ver nuestros yumpis.', '', 'warning')}}>
+          <NavLink to="/nosotros" className={styles.navLink}>Nosotros</NavLink>
+          <NavLink to="/contacto" className={styles.navLink}>Contacto</NavLink>
+          <NavLink to={user ? '/yumpis' : '/'} className={styles.navLink}
+            onClick={() => { if (!user) Swal.fire('Primero tenés que iniciar sesión.', '', 'warning') }}>
             Yumpis
           </NavLink>
-          <NavLink to="/shop" className={styles.navLink}>
-            PetShop
-          </NavLink>
+          <NavLink to="/shop" className={styles.navLink}>PetShop</NavLink>
         </div>
         <div className={styles.item}>
           <div className={styles.icons}>
@@ -104,24 +92,13 @@ function NavBar() {
               </NavLink>
             </div>
             <div className={styles.icon}>
-              <NavLink to={user?'/favoritos':'/'} className={styles.navLinkIcon} onClick={()=>{if(!user)Swal.fire('Necesitás iniciar sesión para ver tus favoritos.', '', 'warning')}}>
+              <NavLink to={user ? '/favoritos' : '/'} className={styles.navLinkIcon}
+                onClick={() => { if (!user) Swal.fire('Primero tenés que iniciar sesión.', '', 'warning') }}>
                 <img src="../../assets/img/favorite.svg" alt="" />
                 <div className={styles.circle}>{productsFavNumber}</div>
               </NavLink>
             </div>
           </div>
-          {/* <div>
-            {!isAuthenticated && <img src="" alt=""></img>}
-            {isAuthenticated && (
-              <NavLink to="/mi-perfil" className={styles.profile}>
-                <img
-                  className={styles.profilePicture}
-                  src={userData.picture}
-                  alt=""
-                ></img>
-              </NavLink>
-            )}
-          </div> */}
           <div className={styles.buttons}>
             {!isAuthenticated && <Login></Login>}
             {isAuthenticated && <DropdownMenu />}
@@ -130,6 +107,4 @@ function NavBar() {
       </nav>
     </div>
   );
-}
-
-export default NavBar;
+};

@@ -1,4 +1,4 @@
- .nav{
+.nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -9,24 +9,24 @@
     background-color: white;
 }
 
-.item{
+.item {
     flex: 1;
     display: flex;
     align-items: center;
 }
 
-.item:nth-child(2){
+.item:nth-child(2) {
     display: flex;
     justify-content: flex-end;
     flex: 1.2;
 }
 
-.item:last-child{
+.item:last-child {
     flex: 1;
     justify-content: flex-end;
 }
 
-.logoLink{
+.logoLink {
     font-size: 32px;
     font-weight: 800;
     text-transform: unset;
@@ -34,12 +34,12 @@
     transition: all ease-in-out 300ms;
 }
 
-.logoLink:hover{
+.logoLink:hover {
     color: var(--primaryColor);
-    
+
 }
 
-.profile{
+.profile {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -54,7 +54,7 @@
     border-radius: 50%;
 }
 
-.navLink{
+.navLink {
     padding: 0 8px;
     font-weight: 600;
     margin: 0 16px;
@@ -63,41 +63,38 @@
     text-transform: uppercase;
 }
 
-.navLink:active{
+.navLink:active {
     font-weight: 800;
     color: var(--shadowColor);
 }
 
-.navLink:hover{
+.navLink:hover {
     color: var(--primaryColor);
     transition: all ease-in-out 300ms;
 }
 
-/* ICON LINKEDIN GITHUB */
-
-
-.icons{
+.icons {
     display: flex;
     flex: 2;
     align-items: center;
     justify-content: center;
 }
 
-.icon{
+.icon {
     position: relative;
 }
 
-.navLinkIcon{
+.navLinkIcon {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.icon:not(:last-child){
+.icon:not(:last-child) {
     margin-right: 40px;
 }
 
-.circle{
+.circle {
     width: 26px;
     height: 26px;
     background-color: #7e52a0;
@@ -111,5 +108,3 @@
     align-items: center;
     justify-content: center;
 }
-
-/* PRUEBA MENU DESPLEGABLE */
