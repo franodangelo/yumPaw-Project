@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
+import axios from "axios";
 import socket from "./Socket";
 import { useAuth0 } from "@auth0/auth0-react";
 import NavBarShop from '../NavBar/NavBarShop';
 import inContainer from "../GlobalCss/InContainer.module.css";
 import styles from './Chat.module.css';
-import axios from "axios";
 
-export const Chat = () => {
+export default function Chat() {
   const { user } = useAuth0();
   const providerEmail = useParams().providerEmail;
   const ownerEmail = useParams().ownerEmail;
@@ -21,11 +21,9 @@ export const Chat = () => {
 
   useEffect(() => {
     axios.get('https://proyecto-grupal.herokuapp.com/providers?filter=&order=ASC').then(x => {
-
-      const mame = x.data.find(x => x.email === providerEmail)
-      console.log(`${mame.name} ${mame.lastName} ${mame.service[0]}`)
-      setName(`${mame.name} ${mame.lastName}`)
-      setService(mame.service[0])
+      const mame = x.data.find(x => x.email === providerEmail);
+      setName(`${mame.name} ${mame.lastName}`);
+      setService(mame.service[0]);
     })
   }, []);
 
@@ -33,30 +31,22 @@ export const Chat = () => {
     let cache = [];
     return function (msj, addCache, renderMessages, cleanCache) {
       if (addCache) {
-        console.log('Se agregaron cosas al cache');
         cache.push(msj);
-        console.log("cache: ", cache);
       }
       else if (renderMessages) {
-        console.log('Se llenó el estado mensajes con el contenido del cache')
         setMensajes([...cache, msj]);
-        console.log("cache: ", cache);
-        // localStorage.setItem(`${providerEmail}`, JSON.stringify([...mensajes, cache]))
       }
       if (cleanCache) {
-        console.log('Se limpió el cache');
         cache = [];
-        console.log("cache: ", cache);
       }
     }
   }
 
   const sendCache = almacenar();
   useEffect(() => {
-    sendCache(false, false, false, true)
-    socket.emit('conectado', "Chat conectado con exito", user.email, providerEmail, ownerEmail)
-    const storedMessages = localStorage.getItem(`${providerEmail}`)
-    // console.log(JSON.parse(storedMessages));
+    sendCache(false, false, false, true);
+    socket.emit('conectado', "Chat conectado con exito", user.email, providerEmail, ownerEmail);
+    const storedMessages = localStorage.getItem(`${providerEmail}`);
     if (storedMessages) {
       setMensajes(JSON.parse(storedMessages));
     }
@@ -72,32 +62,26 @@ export const Chat = () => {
   useEffect(() => {
     socket.on('Mensaje agregado a Mensajes', (msj, caso1, caso2, caso3, lastMessageReceived) => {
       if (caso1 === true) {
-        console.log('Se ejecutó un caso 1: ambos usuarios conectados');
         setMensajes([...mensajes, msj]);
       }
       else if (caso2) {
-        console.log("Se ejecutó un caso 2: usuario 1 conectado y usuario 2 desconectado")
         setMensajes([...mensajes, msj]);
       }
       else if (caso3) {
-        console.log("Se ejecutó un caso 3: usuario 2 conectado")
         if (lastMessageReceived) {
-          console.log('se recibió último mensaje')
-          sendCache(msj, false, true, true)//lastMessagerReceived
+          sendCache(msj, false, true, true);
         }
         else {
-          console.log('se recibe un mensaje de caso 3')
-          sendCache(msj, true, false, false)//addCache
+          sendCache(msj, true, false, false);
         }
       }
     });
     if (mensajes.length > 30) {
-      mensajes.shift()
-      setMensajes(mensajes)
-      console.log(mensajes);
+      mensajes.shift();
+      setMensajes(mensajes);
     }
-    localStorage.setItem(`${providerEmail}`, JSON.stringify(mensajes))
-    return () => { socket.off() }; // Esto no permite que entre en un bucle de sockets
+    localStorage.setItem(`${providerEmail}`, JSON.stringify(mensajes));
+    return () => { socket.off() };
   }, [mensajes])
   const divRef = useRef(null);
   useEffect(() => {
@@ -120,8 +104,7 @@ export const Chat = () => {
         <NavLink to={`/yumpis/${providerEmail}`}>
           <img src="/assets/img/arrow-left.svg" alt="back arrow" className={styles.leftArrow} />
         </NavLink>
-
-          <h2 className={styles.titleChat}>Tu conversación con {name}</h2>
+        <h2 className={styles.titleChat}>Tu conversación con {name}</h2>
         <div className={styles.chat}>
           {mensajes.length > 0 ? mensajes.map((x, y) => {
             return (
@@ -135,11 +118,7 @@ export const Chat = () => {
           <input className={styles.placeholder} type="text" value={mensaje.mensaje} placeholder="Tu mensaje" name="message" onChange={setMessage}></input>
           <button type="submit" value="Enviar" className="primaryButton">Enviar mensaje</button>
         </form>
-        {/* {service == 'hospedaje' ? <NavLink to={`/reservar-hospedaje/${providerEmail}`}><button className="secondaryButton">Reservar servicio</button></NavLink> : null}
-        {service == 'paseo' ? <NavLink to={`/reservar-paseo/${providerEmail}`}><button className="secondaryButton">Reservar servicio</button></NavLink> : null} */}
       </div>
     </div>
   );
-}
-
-export default Chat;
+};
