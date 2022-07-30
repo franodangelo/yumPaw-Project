@@ -1,4 +1,4 @@
-.container{
+.container {
     min-height: 65vh;
     display: flex;
     justify-content: center;
@@ -6,21 +6,21 @@
     align-items: center;
 }
 
-.centerFlex{
+.centerFlex {
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
 }
 
-.buttons{
+.buttons {
     display: flex;
 }
 
-.button{
+.button {
     margin-right: 24px;
 }
 
-.title{
+.title {
     text-transform: uppercase;
 }

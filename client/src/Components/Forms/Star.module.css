@@ -1,4 +1,4 @@
-.container{
+.container {
     min-height: 70vh;
     display: flex;
     flex-direction: column;
@@ -9,9 +9,9 @@
     margin-bottom: 16x;
 }
 
-.star{
+.star {
     background-color: unset;
-    color:var(--shadowColor);
+    color: var(--shadowColor);
     font-size: 40px;
 }
 

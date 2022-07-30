@@ -1,35 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { Container, Form, Button } from "semantic-ui-react";
-import { useFormik } from "formik";
-import * as yup from "yup";
-import "semantic-ui-css/semantic.min.css";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, NavLink } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getOwners, getProviderById, postProvider, putProvider } from "../../redux/actions/ownProvActions";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import style from "./InfoProvider.module.css";
-import InContainer from "../GlobalCss/InContainer.module.css"
+import { Container } from "semantic-ui-react";
+import "semantic-ui-css/semantic.min.css";
+import { getOwners, postProvider } from "../../redux/actions/ownProvActions";
 import NavBar from "../NavBar/NavBarShop";
 import Footer from "../Footer/Footer";
+import InContainer from "../GlobalCss/InContainer.module.css"
+import style from "./InfoProvider.module.css";
 
 export default function InfoProvider() {
-  const { user } = useAuth0();
   const dispatch = useDispatch();
+  const { user } = useAuth0();
   const provider = useSelector(state => state.owners);
   const [userInfo, setUserInfo] = useState(false)
-    
 
   useEffect(() => {
-      dispatch(getOwners())
+    dispatch(getOwners());
   }, [dispatch]);
   useEffect(() => {
-    if(user){
-    setUserInfo(provider.find(x=>x.email === user.email))
-
+    if (user) {
+      setUserInfo(provider.find(x => x.email === user.email));
     }
-}, [provider, user]);
+  }, [provider, user]);
   function walk() {
-    console.log("user infoooooooooooooooooooooooooo",userInfo);
     dispatch(
       postProvider({
         email: user.email,
@@ -37,13 +32,12 @@ export default function InfoProvider() {
         lastName: user.family_name,
         service: ["paseo"],
         latitude: userInfo.latitude,
-        longitude: userInfo.longitude,
+        longitude: userInfo.longitude
       })
     );
   }
 
   function lodging() {
-    console.log(userInfo);
     dispatch(
       postProvider({
         email: user.email,
@@ -51,7 +45,7 @@ export default function InfoProvider() {
         lastName: user.family_name,
         service: ["hospedaje"],
         latitude: userInfo.latitude,
-        longitude: userInfo.longitude,
+        longitude: userInfo.longitude
       })
     );
   }
@@ -60,59 +54,33 @@ export default function InfoProvider() {
     <div>
       <NavBar />
       <div className={InContainer.container}>
-      <NavLink to="/mi-perfil">
+        <NavLink to="/mi-perfil">
           <img
             src="/assets/img/arrow-left.svg"
             alt=""
             className={style.leftArrow}
           />
         </NavLink>
-      <div className={style.container}>
-      
-        <Container>
-          <div className={style.centerFlex}>
-            <h2 className={style.title}>¿Qué servicio te gustaría ofrecer?</h2>
-            <div className={style.buttons}>
-              <div className={style.button}>
-              <Link to="/paseo">
-                <button onClick={walk} disabled={userInfo?false:true} className='primaryButton'>PASEO</button>
-              </Link>
+        <div className={style.container}>
+          <Container>
+            <div className={style.centerFlex}>
+              <h2 className={style.title}>¿Qué servicio te gustaría ofrecer?</h2>
+              <div className={style.buttons}>
+                <div className={style.button}>
+                  <Link to="/paseo">
+                    <button onClick={walk} disabled={userInfo ? false : true} className='primaryButton'>PASEO</button>
+                  </Link>
+                </div>
+                <div>
+                  <Link to="/hospedaje">
+                    <button onClick={lodging} disabled={userInfo ? false : true} className='primaryButton'>HOSPEDAJE</button>
+                  </Link>
+                </div>
               </div>
-              <div>
-              <Link to="/hospedaje">
-                <button onClick={lodging} disabled={userInfo?false:true} className='primaryButton'>HOSPEDAJE</button>
-              </Link>
-              </div>  
             </div>
-            {/* <Form onSubmit={formik.handleSubmit}>
-        <Form.Input
-          type="text"
-          placeholder="Localidad"
-          name="city"
-          onChange={formik.handleChange}
-          error={formik.errors.city}
-        ></Form.Input>
-        <Form.Input
-          type="text"
-          placeholder="Provincia"
-          name="state"
-          onChange={formik.handleChange}
-          error={formik.errors.state}
-        ></Form.Input>
-        <Form.Input
-          type="text"
-          placeholder="Dirección"
-          name="road"
-          onChange={formik.handleChange}
-          error={formik.errors.state}
-        ></Form.Input>
-        <Button type="submit">Enviar</Button>
-      </Form> */}
-          </div>
-        </Container>
+          </Container>
+        </div>
       </div>
-      </div>
-      
       <Footer />
     </div>
   );

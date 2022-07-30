@@ -1,8 +1,8 @@
-.minCont{
+.minCont {
     min-height: 70vh;
 }
 
-.container{
+.container {
     display: flex;
     flex-direction: column;
     width: 100%;

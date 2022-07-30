@@ -1,25 +1,20 @@
 import React, { useState } from "react";
-import { Container, Form, Button } from "semantic-ui-react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import "react-datepicker/dist/react-datepicker.css";
+import { Container, Form } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
-import { useDispatch } from "react-redux";
-import { useAuth0 } from "@auth0/auth0-react";
-import { putOwnerInfo } from "../../redux/actions/ownProvActions";
-import { Link, useNavigate, useParams } from "react-router-dom";
 import NavBar from "../NavBar/NavBarShop";
 import Footer from "../Footer/Footer";
-import style from "./Star.module.css";
-import axios from "axios";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
+import style from "./Star.module.css";
 
 export default function ScheduleProvider() {
-  const dispatch = useDispatch();
   const { user } = useAuth0();
   const navigate = useNavigate();
-  const providerEmail = useParams().providerEmail
   const [lunes, SetLunes] = useState([]);
   const [martes, SetMartes] = useState([]);
   const [miercoles, SetMiercoles] = useState([]);
@@ -27,7 +22,6 @@ export default function ScheduleProvider() {
   const [viernes, SetViernes] = useState([]);
   const [sabado, SetSabado] = useState([]);
   const [domingo, SetDomingo] = useState([]);
-
 
   const formik = useFormik({
     initialValues: [
@@ -40,7 +34,6 @@ export default function ScheduleProvider() {
       { domingo: [] }
     ],
     validationSchema: yup.object({
-      // message: yup.string().required('Este es un campo requerido'),
     }),
 
     onSubmit: async (formData) => {
@@ -52,20 +45,19 @@ export default function ScheduleProvider() {
         title: '¿Estás seguro que querés guardar los cambios?',
         showDenyButton: true,
         denyButtonText: `Cancelar`,
-        confirmButtonText: 'Guardar',
+        confirmButtonText: 'Guardar'
       }).then(async (result) => {
-        /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-          Swal.fire('¡Los cambios fueron guardados con éxito!', '', 'success')
+          Swal.fire('¡Los cambios fueron guardados con éxito!', '', 'success');
           await axios.put('https://proyecto-grupal.herokuapp.com/events/schedule', formData);
-          navigate('/mi-perfil')
+          navigate('/mi-perfil');
         } else if (result.isDenied) {
-          Swal.fire('Los cambios no fueron guardados.', '', 'info')
+          Swal.fire('Los cambios no fueron guardados.', '', 'info');
         }
-      })
-      // await dispatch(putOwnerInfo(formData.email, formData));
+      });
     },
   });
+
   const showInputs = (day, SetDay, stateDay, idx) => {
     return (<div>
       {stateDay.map((x, y) => {
@@ -73,17 +65,15 @@ export default function ScheduleProvider() {
           <input type='time'
             indice={y}
             onChange={(e) => {
-              formik.values[idx][day].splice(y, 1, e.target.value)
-              console.log(formik.values[idx])
+              formik.values[idx][day].splice(y, 1, e.target.value);
             }
             }></input>
         </div>)
       })}
       <input type='button' onClick={() => {
-        let stateDayLength = stateDay.length - 1
+        let stateDayLength = stateDay.length - 1;
         if (formik.values[idx][day][stateDayLength]) {
-          console.log('ingreesé a donde deberia estar')
-          SetDay([...stateDay, 0])
+          SetDay([...stateDay, 0]);
         }
       }} value="+" />
     </div>)
@@ -96,59 +86,47 @@ export default function ScheduleProvider() {
         <div className={style.container}>
           <h2>Agregá tu disponibilidad para trabajar</h2>
           <Form onSubmit={formik.handleSubmit}>
-            {/* <Form.Input
-              type="text"
-              placeholder="Contanos un poco más..."
-              name="message"
-              onChange={formik.handleChange}
-              error={formik.errors.message}
-            ></Form.Input>
-             */}
             <div class="ui checkbox">
               <input type="checkbox"
                 name="lunes"
                 onChange={() => {
-                  SetLunes(['ojkioj'])
+                  SetLunes(['lunes'])
                 }}
               />
               <label>Lunes</label>
             </div>
-
             <div class="ui checkbox">
               <input type="checkbox"
                 name="martes"
                 onChange={() => {
-                  SetMartes(['ojkioj'])
+                  SetMartes(['martes'])
                 }}
               />
               <label>Martes</label>
             </div>
-
             <div class="ui checkbox">
               <input type="checkbox"
                 name="miercoles"
                 onChange={() => {
-                  SetMiercoles(['ojkioj'])
+                  SetMiercoles(['miercoles'])
                 }}
               />
               <label>Miércoles</label>
             </div>
-
             <div class="ui checkbox">
               <input type="checkbox"
                 name="jueves"
                 onChange={() => {
-                  SetJueves(['ojkioj'])
+                  SetJueves(['jueves'])
                 }}
               />
               <label>Jueves</label>
             </div>
-
             <div class="ui checkbox">
               <input type="checkbox"
                 name="viernes"
                 onChange={() => {
-                  SetViernes(['ojkioj'])
+                  SetViernes(['viernes'])
                 }}
               />
               <label>Viernes</label>
@@ -157,7 +135,7 @@ export default function ScheduleProvider() {
               <input type="checkbox"
                 name="sabado"
                 onChange={() => {
-                  SetSabado(['ojkioj'])
+                  SetSabado(['sabado'])
                 }}
               />
               <label>Sabado</label>
@@ -166,80 +144,49 @@ export default function ScheduleProvider() {
               <input type="checkbox"
                 name="domingo"
                 onChange={() => {
-                  SetDomingo(['ojkioj'])
+                  SetDomingo(['domingo'])
                 }}
               />
               <label>Domingo</label>
             </div>
-            {console.log(lunes.length)}
-
-
             {lunes.length > 0 ?
               <div>
-                <br />
-                <br />
-                <hr />
                 <h3>Lunes</h3>
                 {showInputs('lunes', SetLunes, lunes, 0)}
               </div> : null
             }
-
             {martes.length > 0 ?
               <div>
-                <br />
-                <br />
-                <hr />
                 <h3>Martes</h3>
                 {showInputs('martes', SetMartes, martes, 1)}
               </div> : null
             }
-
             {miercoles.length > 0 ?
               <div>
-                <br />
-                <br />
-                <hr />
                 <h3>Miercoles</h3>
                 {showInputs('miercoles', SetMiercoles, miercoles, 2)}
               </div> : null
             }
-
             {jueves.length > 0 ?
               <div>
-                <br />
-                <br />
-                <hr />
                 <h3>Jueves</h3>
                 {showInputs('jueves', SetJueves, jueves, 3)}
               </div> : null
             }
-
             {viernes.length > 0 ?
               <div>
-                <br />
-                <br />
-                <hr />
                 <h3>Viernes</h3>
                 {showInputs('viernes', SetViernes, viernes, 4)}
               </div> : null
             }
-
-
             {sabado.length > 0 ?
               <div>
-                <br />
-                <br />
-                <hr />
                 <h3>Sabado</h3>
                 {showInputs('sabado', SetSabado, sabado, 5)}
               </div> : null
             }
-
             {domingo.length > 0 ?
               <div>
-                <br />
-                <br />
-                <hr />
                 <h3>Domingo</h3>
                 {showInputs('domingo', SetDomingo, domingo, 6)}
               </div> : null
@@ -251,4 +198,4 @@ export default function ScheduleProvider() {
       <Footer />
     </div>
   );
-}
+};

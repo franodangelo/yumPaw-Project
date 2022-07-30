@@ -1,17 +1,17 @@
-.container{
+.container {
     min-height: 65vh;
     display: flex;
     justify-content: center;
     flex-direction: column;
 }
 
-.formCont{
+.formCont {
     display: flex;
     width: 100%;
     flex-direction: column;
-    justify-content: center; 
+    justify-content: center;
 }
 
-.margintop{
+.margintop {
     margin-top: 20px;
 }

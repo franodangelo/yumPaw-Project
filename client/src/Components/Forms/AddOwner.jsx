@@ -51,21 +51,21 @@ export default function AddOwner() {
             <h3>Y formá parte de la comunidad mascotera más grande de Latam</h3>
             <form onSubmit={onSubmit}>
                 <div>
-                    <label>NOMBRE</label>
+                    <label>Nombre</label>
                     <input name='name'
                         onChange={handleState}
                         value={owner.name} />
                 </div>
                 <br />
                 <div>
-                    <label>APELLIDO</label>
+                    <label>Apellido</label>
                     <input name='lastName'
                         onChange={handleState}
                         value={owner.lastName} />
                 </div>
                 <br />
                 <div>
-                    <label>EMAIL</label>
+                    <label>Correo electrónico</label>
                     <input name='email'
                         onChange={handleState}
                         value={owner.email} />

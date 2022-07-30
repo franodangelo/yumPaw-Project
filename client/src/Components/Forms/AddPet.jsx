@@ -1,24 +1,22 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { Form, Button } from "semantic-ui-react";
-import "semantic-ui-css/semantic.min.css";
-import { useFormik } from "formik";
-import * as yup from "yup";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Widget } from "@uploadcare/react-widget";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import { Form } from "semantic-ui-react";
+import "semantic-ui-css/semantic.min.css";
 import { getPets, postPet } from "../../redux/actions/ownProvActions";
 import NavBar from "../NavBar/NavBarShop";
+import Footer from "../Footer/Footer";
 import inContainer from "../GlobalCss/InContainer.module.css";
 import style from "./Form.module.css";
-import axios from "axios";
-import Footer from "../Footer/Footer";
 
 export default function InfoProvider() {
   const dispatch = useDispatch();
-  const { user } = useAuth0();
-  const auth0 = useAuth0();
   const navigate = useNavigate();
+  const { user } = useAuth0();
 
   const formik = useFormik({
     initialValues: {
@@ -29,7 +27,7 @@ export default function InfoProvider() {
       size: "",
       description: "",
       ownerName: "",
-      photos: [],
+      photos: []
     },
     validationSchema: yup.object({
       name: yup.string().required('Ponle un nombre a tu mascota'),
@@ -37,26 +35,24 @@ export default function InfoProvider() {
       size: yup.string().required('Indícanos de qué tamaño es tu mascota'),
       type: yup.string().required('Indícanos qué tipo de animal es tu mascota')
     }),
-
     onSubmit: async (formData) => {
-      console.log(formData);
       await dispatch(postPet(formData.userEmail, formData));
       navigate("/mi-perfil");
       dispatch(getPets());
-    },
+    }
   });
 
   const categoriesOptions = [
     { key: "Grande", value: "Grande", text: "Grande" },
     { key: "Mediano", value: "Mediano", text: "Mediano" },
-    { key: "Chico", value: "Chico", text: "Chico" },
+    { key: "Chico", value: "Chico", text: "Chico" }
   ];
 
   const categoriesOptionsType = [
     { key: "Perro", value: "Perro", text: "Perro" },
     { key: "Gato", value: "Gato", text: "Gato" },
     { key: "Conejo", value: "Conejo", text: "Conejo" },
-    { key: "Tortuga", value: "Tortuga", text: "Tortuga" },
+    { key: "Tortuga", value: "Tortuga", text: "Tortuga" }
   ];
 
   return (
@@ -96,11 +92,8 @@ export default function InfoProvider() {
               placeholder="Tamaño"
               options={categoriesOptions}
               onChange={(e) => {
-                console.log(e.target.firstChild.textContent);
                 e.target.value = e.target.firstChild.textContent;
                 e.target.name = "size";
-                // console.log(e.target)
-                console.log(e.target.value);
                 formik.handleChange(e);
               }}
               selection={true}
@@ -121,7 +114,6 @@ export default function InfoProvider() {
               name="photos"
               onChange={(e) => {
                 formik.values.photos.push(e.originalUrl);
-                console.log(formik);
               }}
               perrito="profilePicture"
             />
@@ -132,7 +124,7 @@ export default function InfoProvider() {
           </Form>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
-}
+};
