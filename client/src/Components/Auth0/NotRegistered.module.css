@@ -1,19 +1,19 @@
-.container{
+.container {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
 }
 
-.img{
+.img {
     position: relative;
 }
 
-.log{
+.log {
     display: flex;
     flex-direction: column;
 }
 
-.button{
+.button {
     width: 100%;
 }

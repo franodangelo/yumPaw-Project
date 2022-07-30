@@ -1,5 +1,5 @@
-.button{
-    background-color:transparent;
+.button {
+    background-color: transparent;
     color: #7e52a0;
     font-weight: 500;
     border: 2px solid #7e52a0;
@@ -8,7 +8,7 @@
     margin: 0;
 }
 
-.button:hover{
+.button:hover {
     background-color: #7e52a0;
     color: white;
     transition: all ease-in 200ms;
