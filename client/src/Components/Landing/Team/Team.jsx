@@ -1,13 +1,12 @@
 import React from "react";
+import TeamCard from "./TeamCard";
 import InContainer from "../../GlobalCss/InContainer.module.css";
 import styles from "../Team/Team.module.css";
-import TeamCard from "./TeamCard";
 
-const Team = () => {
+export default function Team() {
   return (
     <div className={InContainer.container}>
       <h2 className={styles.teamTitle}>Nosotros somos yumPaw</h2>
-
       <div className={styles.wrapper}>
         <TeamCard
           name="Leo"
@@ -53,5 +52,3 @@ const Team = () => {
     </div>
   );
 };
-
-export default Team;

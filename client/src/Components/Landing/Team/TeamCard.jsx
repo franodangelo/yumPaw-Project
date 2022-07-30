@@ -1,12 +1,11 @@
 import React from "react";
 import styles from "../Team/TeamCard.module.css";
 
-const TeamCard = (props) => {
+export default function TeamCard(props) {
   return (
     <div className={styles.card}>
       <div className={styles.cardBody}>
         <img src={props.img} alt="imagen" className={styles.cardImg} />
-
         <section className={styles.cardBottom}>
           <div className={styles.cardInfo}>
             <h2 className={styles.cardName}>{props.name}</h2>
@@ -21,7 +20,6 @@ const TeamCard = (props) => {
                     className="margin-right"
                   />
                 </a>
-
                 <a href={props.link} target="__blank">
                   <img src="./assets/img/logo-github.svg" alt="" />
                 </a>
@@ -33,5 +31,3 @@ const TeamCard = (props) => {
     </div>
   );
 };
-
-export default TeamCard;

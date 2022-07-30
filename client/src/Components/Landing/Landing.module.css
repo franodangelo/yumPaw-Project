@@ -1,17 +1,15 @@
-.hero{
+.hero {
     margin-top: 64px;
 }
 
-.whatWeOffer{
+.whatWeOffer {
     margin-top: 80px;
 }
 
-.team{
+.team {
     margin-top: 80px;
 }
 
-.footer{
+.footer {
     margin-top: var(--margin80);
 }
-
-

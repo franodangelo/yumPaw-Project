@@ -1,32 +1,32 @@
-.flexHero{
+.flexHero {
     display: flex;
     justify-content: space-between;
 }
 
-.leftHero{
+.leftHero {
     display: flex;
     flex-direction: column;
     width: auto;
 }
 
-.textHero{
+.textHero {
     font-size: var(--bigFont);
     text-transform: uppercase;
 }
 
-.paragraph{
+.paragraph {
     font-size: var(--p);
 }
 
 /* Button se parte de nuestra comunidad */
-.previewItems{
+.previewItems {
     margin-top: 8px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
 }
 
-.imgHero{
+.imgHero {
     display: flex;
     align-items: center;
     justify-content: flex-end;

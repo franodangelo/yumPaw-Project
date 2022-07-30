@@ -1,10 +1,9 @@
 import React from "react";
-import LoginLanding from '../../Auth0/LoginLanding'
-import global from "../../GlobalCss/Global.module.css";
+import LoginLanding from '../../Auth0/LoginLanding';
 import InContainer from "../../GlobalCss/InContainer.module.css";
 import styles from "../Hero/Hero.module.css";
 
-const Hero = (props) => {
+export default function Hero(props) {
   return (
     <div className={InContainer.container}>
       <section className={styles.flexHero}>
@@ -15,14 +14,10 @@ const Hero = (props) => {
             <LoginLanding/ >
           </div>
         </div>
-
         <div className={styles.rightHero}>
           <img src="/assets/img/vector.png" alt="" className={styles.imgHero}/>
-          {/* <span className={styles.imgHero}>Imagen</span> */}
         </div>
       </section>
     </div>
   );
 };
-
-export default Hero;

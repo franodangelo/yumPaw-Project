@@ -1,9 +1,9 @@
-.teamTitle{
+.teamTitle {
     font-size: var(--mediumFont);
     margin-bottom: var(--margin80);
 }
 
-.wrapper{
+.wrapper {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 240px));
     gap: 20px;
