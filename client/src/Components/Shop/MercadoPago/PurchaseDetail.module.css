@@ -1,4 +1,4 @@
-.container{
+.container {
     width: 100%;
     height: auto;
     display: flex;
@@ -8,23 +8,22 @@
     margin-bottom: 10px;
 }
 
-.productImg{
+.productImg {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
 }
 
-.product{
+.product {
     font-size: 20px;
     text-align: center;
 }
 
-.primary{
+.primary {
     color: var(--primaryColor);
 }
 
-.subtotal{
+.subtotal {
     margin: 0;
 }
-
