@@ -1,32 +1,31 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
 import {
   chargeCart,
   clearAllCart,
   postSold,
 } from "../../../redux/actions/petshopActions";
-import { useAuth0 } from "@auth0/auth0-react";
 import style from "./CartConfirmation.module.css";
 
-const CartConfirmation = () => {
-  const navigate = useNavigate();
-  const cart = useSelector((state) => state.cart);
-
-  const { user } = useAuth0();
+export default function CartConfirmation() {
   const dispatch = useDispatch();
+  const { user } = useAuth0();
+  const navigate = useNavigate();
 
-  const [compraExitosa, setCompraExitosa] = useState("esperando");
+  const cart = useSelector((state) => state.cart);
+  const [successfulPurchase, setSuccessfulPurchase] = useState("waiting");
   const useQuery = () => {
     return new URLSearchParams(useLocation().search);
   };
+
   let query = useQuery();
   let payment_id = query.get("payment_id");
   let collection_id = query.get("collection_id");
-  console.log("COLLECIOOOOOOOOOOOOOOOOON", collection_id);
   let status = query.get("status");
-  const idCliente = localStorage.getItem("IdCliente");
+  const clientID = localStorage.getItem("clientID");
 
   useEffect(() => {
     dispatch(chargeCart("cart"));
@@ -36,42 +35,36 @@ const CartConfirmation = () => {
     dispatch(clearAllCart("cart"));
   };
 
-  let neto = () => {
+  let net = () => {
     cart.forEach((i) => {
       let total = i.stock - i.quantity;
       return axios.put(`https://proyecto-grupal.herokuapp.com/products/${i.id}`, {
-        stock: total,
+        stock: total
       });
     });
   };
 
-  // http://localhost:3000/confirmacion?collection_id=22853430296&collection_status=approved&payment_id=22853430296&status=approved&external_reference=null&payment_type=credit_card&merchant_order_id=4886373922&preference_id=1134140317-628056cc-5b68-4165-bc81-4131a793f9b1&site_id=MLA&processing_mode=aggregator&merchant_account_id=null
-
   useEffect(() => {
     (async () => {
       if (payment_id !== null && status === "approved") {
-        setCompraExitosa("comprado");
+        setSuccessfulPurchase("bought");
 
-        let res = await axios.get(
+        let response = await axios.get(
           `https://api.mercadopago.com/v1/payments/${collection_id}?access_token=APP_USR-7012537343723443-053123-5facd15f88649bf31385f5ab06f47cb9-1134140317`
         );
 
-        console.log('REEEESSS', res.data)
-        let resp = {
-          id: res.data.id,
+        let paymentResponse = {
+          id: response.data.id,
           first_name: user.given_name,
           last_name: user.family_name,
-          items: res.data.additional_info.items,
-          status: res.data.status,
-          date_created: res.data.date_created,
-          transaction_amount: res.data.transaction_amount,
+          items: response.data.additional_info.items,
+          status: response.data.status,
+          date_created: response.data.date_created,
+          transaction_amount: response.data.transaction_amount,
           email: user.email
         }
 
-        console.log('REEEESSSpp', resp)
-
-
-        dispatch(postSold(resp))
+        dispatch(postSold(paymentResponse));
 
         setTimeout(() => {
           clearCart();
@@ -80,25 +73,21 @@ const CartConfirmation = () => {
         setTimeout(() => {
           navigate("/shop");
         }, 4000);
-      }
+      };
     })();
-  }, [payment_id, status, idCliente, navigate, clearCart, user]);
+  }, [payment_id, status, clientID, navigate, clearCart, user]);
 
   return (
     <>
       <div className={style.container}>
         <p className={style.paragraph}>Esperando confirmación de compra:</p>
-        <h2 className={style.confirm}>CONFIRMACIÓN DEL PEDIDO</h2>
-
-        {compraExitosa === "esperando" && <h3>Procesando...</h3>}
-        {compraExitosa === "comprado" && <h3>Gracias por comprar</h3>}
-        {compraExitosa === "error" && <h3>Error en la compra</h3>}
-        {neto()}
-
-        <h3 className={style.redi}>Serás redirigido en unos segundos</h3>
+        <h2 className={style.confirm}>Compra confirmada</h2>
+        {successfulPurchase === "waiting" && <h3>Procesando pago...</h3>}
+        {successfulPurchase === "bought" && <h3>¡Gracias por tu compra!</h3>}
+        {successfulPurchase === "error" && <h3>Error en la compra</h3>}
+        {net()}
+        <h3 className={style.redi}>Serás redirigido a tu perfil en unos segundos...</h3>
       </div>
     </>
   );
 };
-
-export default CartConfirmation;

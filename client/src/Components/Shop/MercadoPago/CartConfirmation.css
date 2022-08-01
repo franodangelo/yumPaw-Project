@@ -1,22 +1,22 @@
-.container{
+.container {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-color:var(--success);
+    background-color: var(--success);
     height: 100vh;
     color: white;
     font-size: 40px;
 }
 
-.confirm{
+.confirm {
     font-size: 40px;
 }
 
-.paragraph{
+.paragraph {
     font-size: 24px;
 }
 
-.redi{
+.redi {
     color: var(--black);
 }
