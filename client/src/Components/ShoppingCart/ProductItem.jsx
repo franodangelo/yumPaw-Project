@@ -1,4 +1,4 @@
-const ProductItem = ({ data, addToCart }) => {
+export default function ProductItem({ data, addToCart }) {
     let { id, name, price } = data;
 
     return (
@@ -9,5 +9,3 @@ const ProductItem = ({ data, addToCart }) => {
         </div>
     )
 };
-
-export default ProductItem;

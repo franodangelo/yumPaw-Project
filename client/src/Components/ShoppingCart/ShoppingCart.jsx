@@ -1,24 +1,22 @@
 import { useEffect, useState } from "react";
-import CartItem from "./CartItem";
-import "../../index.css";
-import NavBarShop from "../NavBar/NavBarShop";
-import Footer from "../Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
-import { chargeCart, clearAllCart } from "../../redux/actions/petshopActions";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import MercadoPago from "../Shop/MercadoPago/MercadoPago";
-import styles from "../ShoppingCart/ShoppingCart.module.css";
-import InContainer from "../GlobalCss/InContainer.module.css";
 import Swal from "sweetalert2";
+import { chargeCart, clearAllCart } from "../../redux/actions/petshopActions";
+import NavBarShop from "../NavBar/NavBarShop";
+import CartItem from "./CartItem";
+import Footer from "../Footer/Footer";
+import InContainer from "../GlobalCss/InContainer.module.css";
+import styles from "../ShoppingCart/ShoppingCart.module.css";
+import "../../index.css";
 
-const ShoppingCart = () => {
+export default function ShoppingCart() {
   const dispatch = useDispatch();
   const { user } = useAuth0();
-  const cart = useSelector((state) => state.cart);
-  console.log("CARRITO: ", cart);
+  const navigate = useNavigate();
   const [total, setTotal] = useState(0);
-  const navigate = useNavigate()
+  const cart = useSelector((state) => state.cart);
 
   useEffect(() => {
     if (user) {
@@ -27,13 +25,12 @@ const ShoppingCart = () => {
   }, [user, dispatch]);
 
   useEffect(() => {
-    var suma = 0;
+    var addition = 0;
     if (cart && cart.length) {
-      cart.forEach((x) => {
-        suma += x.price * x.quantity;
-        console.log("TOTAL", total);
+      cart.forEach(c => {
+        addition += c.price * c.quantity;
       });
-      setTotal(suma);
+      setTotal(addition);
     } else {
       setTotal(0);
     }
@@ -48,7 +45,7 @@ const ShoppingCart = () => {
     <div>
       <NavBarShop />
       <div className={InContainer.container}>
-        <NavLink to={user?"/shop":'/'}>
+        <NavLink to={user ? "/shop" : '/'}>
           <img src="./assets/img/arrow-left.svg" alt="" />
         </NavLink>
         <h2 className={styles.cartTitle}>Carrito</h2>
@@ -90,9 +87,7 @@ const ShoppingCart = () => {
               />
             ))
           ) : (
-            <p className={styles.noProducts}>
-              No hay ningún producto en el carrito
-            </p>
+            <p className={styles.noProducts}>No hay ningún producto en el carrito</p>
           )}
         </article>
         <div className={styles.cartBottom}>
@@ -102,11 +97,11 @@ const ShoppingCart = () => {
             </div>
             <div className={styles.purchase}>
               {cart && cart.length > 0 ? (
-              
-                  <button className="primaryButton" onClick={()=>{
-                    if(user&&user.email)navigate('/purchaseConfirmation')
-                    else(Swal.fire('Tenés que ingresar en la página para poder comprar'))
-                  }}>Continuar con el pago</button>
+                <button className="primaryButton" onClick={() => {
+                  if (user && user.email) navigate('/purchaseConfirmation')
+                  else (Swal.fire('Tenés que ingresar en la página para poder comprar'))
+                }}>Continuar con el pago
+                </button>
               ) : (
                 <div></div>
               )}
@@ -127,5 +122,3 @@ const ShoppingCart = () => {
     </div>
   );
 };
-
-export default ShoppingCart;

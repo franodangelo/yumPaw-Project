@@ -1,47 +1,39 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addOneItem,
-  deleteItem,
-  removeFromCart,
-} from "../../redux/actions/petshopActions";
-import styles from "../ShoppingCart/CartItem.module.css";
-import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
-import {
-  ADD_ITEM,
-  DELETE_ITEM,
-} from "../../redux/actions-type/petshopActionsTypes";
+import Swal from "sweetalert2";
+import { removeFromCart } from "../../redux/actions/petshopActions";
+import { ADD_ITEM, DELETE_ITEM } from "../../redux/actions-type/petshopActionsTypes";
+import styles from "../ShoppingCart/CartItem.module.css";
 
-const CartItem = ({ name, image, price, quantity, id, stock }) => {
-  const { user } = useAuth0();
+export default function CartItem({ name, image, price, quantity, id, stock }) {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
-  const cartItem = cart.find((x) => x.id === id);
+  const cartItem = cart.find(ci => ci.id === id);
 
-  const delFromCart = (id) => {
+  const deleteFromCart = (id) => {
     dispatch(removeFromCart(id, 'cart'));
   };
+
   const addItem = () => {
-    if(cartItem.stock > cartItem.quantity)
-    {dispatch({
-      type: ADD_ITEM,
-      payload: id,
-      email: 'cart',
-      stock: stock,
-    });}
+    if (cartItem.stock > cartItem.quantity) {
+      dispatch({
+        type: ADD_ITEM,
+        payload: id,
+        email: 'cart',
+        stock: stock
+      });
+    }
     else Swal.fire('Límite de stock alcanzado.', '', 'warning');
   };
 
-  const delItem = () => {
+  const deleteItem = () => {
     dispatch({
       type: DELETE_ITEM,
       payload: id,
-      email: 'cart',
+      email: 'cart'
     });
   };
 
-  console.log("quantity", quantity);
 
   return (
     <div className={styles.container}>
@@ -58,10 +50,9 @@ const CartItem = ({ name, image, price, quantity, id, stock }) => {
                 <div className={styles.item}>
                   <h4 className={styles.productName}>{name}</h4>
                   <button
-                    onClick={() => delFromCart(id)}
+                    onClick={() => deleteFromCart(id)}
                     className={styles.buttonDelete}
-                  >
-                    Eliminar
+                  >Eliminar
                   </button>
                 </div>
               </th>
@@ -71,7 +62,7 @@ const CartItem = ({ name, image, price, quantity, id, stock }) => {
               <th className={styles.th}>
                 <div className={styles.centerButton}>
                   <div className={styles.addOneItem}>
-                    <span className={styles.button} onClick={delItem}>
+                    <span className={styles.button} onClick={deleteItem}>
                       -
                     </span>
                     <div className={styles.count}>{quantity}</div>
@@ -91,5 +82,3 @@ const CartItem = ({ name, image, price, quantity, id, stock }) => {
     </div>
   );
 };
-
-export default CartItem;
