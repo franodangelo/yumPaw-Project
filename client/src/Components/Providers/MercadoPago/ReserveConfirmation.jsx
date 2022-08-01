@@ -54,9 +54,9 @@ export default function ReserveConfirmation() {
         <p className={style.paragraph}>Esperando confirmación de compra:</p>
         <h2 className={style.confirm}>Compra confirmada</h2>
         {successfulPurchase === "waiting" && <h3>Procesando pago...</h3>}
-        {successfulPurchase === "bought" && <h3>Gracias por tu compra!</h3>}
+        {successfulPurchase === "bought" && <h3>¡Gracias por tu compra!</h3>}
         {successfulPurchase === "error" && <h3>Hubo un error en tu compra</h3>}
-        <h3 className={style.redi}>Serás redirigido a tu perfil en unos segundos</h3>
+        <h3 className={style.redi}>Serás redirigido a tu perfil en unos segundos...</h3>
       </div>
     </>
   );
