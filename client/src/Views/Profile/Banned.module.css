@@ -1,4 +1,4 @@
-.container{
+.container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6,7 +6,7 @@
     width: 100vw;
 }
 
-.title{
+.title {
     font-size: var(--mediumFont);
     color: var(--black);
     text-transform: uppercase;

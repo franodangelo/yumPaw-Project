@@ -1,18 +1,18 @@
-.container{
+.container {
     display: flex;
     justify-content: center;
     flex-direction: column;
     height: 60vh;
 }
 
-h1{
+h1 {
     font-size: var(--mediumFont);
 }
 
-.buttonFlex{
+.buttonFlex {
     display: flex;
 }
 
-.margin{
+.margin {
     margin-right: 16px;
 }

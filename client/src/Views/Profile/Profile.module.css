@@ -12,14 +12,14 @@
   margin-top: 32px;
 }
 
-.profilePicture{
+.profilePicture {
   border-radius: 1em 0 0 1em;
   width: 350px;
   height: auto;
   object-fit: cover;
 }
 
-.profilePictureCont{
+.profilePictureCont {
   object-fit: cover;
   position: relative;
   display: flex;
@@ -48,13 +48,13 @@
 }
 
 .petsProfile article {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: 32px;
-    margin-top: 1em;
-} 
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+  margin-top: 1em;
+}
 
 .petsProfile {
   display: grid;
@@ -112,6 +112,7 @@
 .buttonContainer {
   display: flex;
 }
+
 .name {
   margin: 0;
   text-transform: uppercase;
@@ -126,6 +127,7 @@
   width: 100%;
   margin-bottom: 20px;
 }
+
 .service {
   margin-right: 16px;
 }
@@ -172,33 +174,33 @@
   text-transform: uppercase;
 }
 
-.titulo{
+.titulo {
   text-transform: uppercase;
   color: var(--primaryColor);
 }
 
-.race{
+.race {
   color: var(--primaryColor);
   text-transform: uppercase;
 }
 
-.span{
+.span {
   color: var(--black);
 }
 
-.delete{
+.delete {
   display: flex;
   width: 100%;
   justify-content: flex-end;
 }
 
-.hogar{
+.hogar {
   text-transform: uppercase;
   color: var(--black);
   padding: 32px 0 0 0;
 }
 
-.petSection{
+.petSection {
   border-top: 1px solid var(--gray);
   border-bottom: 1px solid var(--gray);
   margin: var(--margin64) 0;
@@ -219,7 +221,7 @@
   border-radius: 8px;
 }
 
-.adminPanel{
+.adminPanel {
   display: flex;
   justify-content: space-evenly;
   width: 100%;
@@ -227,6 +229,6 @@
   margin: 0 auto;
 }
 
-.marginDiv{
+.marginDiv {
   margin: 32px 0;
 }

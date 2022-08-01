@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from "react";
-import NavBarShop from "../../Components/NavBar/NavBarShop";
-import { useAuth0 } from "@auth0/auth0-react";
-import { Link, useNavigate } from "react-router-dom";
-import Footer from "../../Components/Footer/Footer";
-import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
+import Swal from "sweetalert2";
 import { getPets } from "../../redux/actions/ownProvActions";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { addDays } from "date-fns";
+import NavBarShop from "../../Components/NavBar/NavBarShop";
+import Footer from "../../Components/Footer/Footer";
+import InContainer from "../../Components/GlobalCss/InContainer.module.css";
 import styleContainer from "../../Components/GlobalCss/InContainer.module.css";
 import style from "./Profile.module.css";
-import Swal from "sweetalert2";
-import InContainer from "../../Components/GlobalCss/InContainer.module.css";
-import "react-datepicker/dist/react-datepicker.css";
-import DatePicker from "react-datepicker";
-import { addDays } from "date-fns";
 
 export default function Profile() {
-  const pets = useSelector((state) => state.pets);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [userData, setUser] = useState({});
   const { user, isAuthenticated } = useAuth0();
+  const [userData, setUser] = useState({});
   const [isProvider, setIsProvider] = useState(false);
   const [providerInfo, setProviderInfo] = useState();
   const [eventsProvider, setEventsProvider] = useState();
   const [eventsOwner, setEventsOwner] = useState();
   const [ableDays, setAbleDays] = useState([]);
+  const pets = useSelector((state) => state.pets);
 
   useEffect(() => {
     if (user) {
@@ -46,17 +46,17 @@ export default function Profile() {
       axios
         .get("https://proyecto-grupal.herokuapp.com/owners")
         .then(u => {
-          const userdb = u.data.find(u => u.email === user.email);
+          const userDb = u.data.find(u => u.email === user.email);
           setUser({
             nombre: user.name,
             picture:
-              userdb && userdb.profilePicture && userdb.profilePicture[0]
-                ? userdb.profilePicture[0]
+              userDb && userDb.profilePicture && userDb.profilePicture[0]
+                ? userDb.profilePicture[0]
                 : "/assets/img/notloged.png",
             email: user.email,
-            pets: userdb ? userdb.pets : [],
-            address: userdb.address,
-            isAdmin: userdb.isAdmin
+            pets: userDb ? userDb.pets : [],
+            address: userDb.address,
+            isAdmin: userDb.isAdmin
           });
         })
         .then(() => {
@@ -85,12 +85,12 @@ export default function Profile() {
           if (providerCheck && providerCheck.service[0] === "paseo") {
             providerCheck = {
               ...providerCheck,
-              schedule: providerCheck.schedule.map(p => JSON.parse(p)),
+              schedule: providerCheck.schedule.map(p => JSON.parse(p))
             };
             setIsProvider(true);
             setProviderInfo(providerCheck);
-          } else if (providerCheck && providerCheck.service[0] === "hospedaje")
-            setProviderInfo(providerCheck);
+          } else if (providerCheck && providerCheck.service[0] === "hospedaje");
+          setProviderInfo(providerCheck);
         });
     }
   }, [user]);
@@ -105,11 +105,11 @@ export default function Profile() {
   }
   return (
     <main>
-      <NavBarShop/>
+      <NavBarShop />
       <div className={styleContainer.container}>
         <div className={InContainer.container}>
           <section className={style.infoProfile}>
-            <img src={userData.picture} alt="profilePicture"/>
+            <img src={userData.picture} alt="profilePicture" />
             <article className={style.profile}>
               <div className={style.editarperfil}>
                 <Link to="/mis-datos">
@@ -174,13 +174,13 @@ export default function Profile() {
                     includeDates={
                       ableDays && ableDays.length
                         ? ableDays.map(ad => {
-                            const dayTemp = ad.split("/")[0];
-                            const monthTemp = ad.split("/")[1];
-                            let newDate = ad.split("/");
-                            newDate[0] = monthTemp;
-                            newDate[1] = dayTemp;
-                            return addDays(new Date(newDate.join("/")), 0);
-                          })
+                          const dayTemp = ad.split("/")[0];
+                          const monthTemp = ad.split("/")[1];
+                          let newDate = ad.split("/");
+                          newDate[0] = monthTemp;
+                          newDate[1] = dayTemp;
+                          return addDays(new Date(newDate.join("/")), 0);
+                        })
                         : []
                     }
                     inline
@@ -206,12 +206,7 @@ export default function Profile() {
                 {providerInfo.housingPhotos &&
                   providerInfo.housingPhotos.map((x, y) => {
                     return (
-                      <img
-                        src={x}
-                        key={y}
-                        alt={y}
-                        className={style.housePhoto}
-                      />
+                      <img src={x} key={y} alt={y} className={style.housePhoto} />
                     );
                   })}
               </div>
@@ -221,9 +216,7 @@ export default function Profile() {
             providerInfo.schedule &&
             providerInfo.service[0] === "paseo" && (
               <section className={style.mainInfoProfile}>
-                <h2 style={{display:"block"}}>Mis días de trabajo</h2>
-                <br/>
-                <br/>
+                <h2 style={{ display: "block" }}>Mis días de trabajo</h2>
                 <div>
                   {providerInfo.schedule[0] &&
                     providerInfo.schedule[0].lunes &&
@@ -306,58 +299,56 @@ export default function Profile() {
             <article className={style.petsProfile}>
               {userData.pets && userData.pets.length > 0
                 ? userData.pets.map((u, k) => {
-                    if (x.isActive) {
-                      return (
-                        <div className={style.petInfo} key={k}>
-                          <div className={style.profilePictureCont}>
-                            <img
-                              src={u.profilePicture}
-                              alt="profilePicture"
-                              className={style.profilePicture}
-                            />
-                          </div>
-                          <div className={style.petData}>
-                            <h2 className={style.titulo}>{u.name}</h2>
-                            <h4 className={style.race}>
-                              {" "}
-                              Raza: <span className={style.span}>{u.race}</span>
-                            </h4>
-                            <p className={style.aboutDog}>
-                              Sobre {u.name}:{" "}
-                              <span className={style.span}>
-                                {u.description}
-                              </span>
-                            </p>
-                          </div>
-                          <button
-                            className="secondaryButton"
-                            onClick={() => {
-                              Swal.fire({
-                                title:
-                                  "¿Estás seguro que querés eliminar a esta mascota?",
-                                showDenyButton: true,
-                                confirmButtonText: "Eliminar",
-                                denyButtonText: `Cancelar`
-                              }).then(async (result) => {
-                                if (result.isConfirmed) {
-                                  Swal.fire(
-                                    "¡La mascota fue eliminada!",
-                                    "",
-                                    "success"
-                                  );
-                                  byePet(u.id);
-                                } else if (result.isDenied) {
-                                  Swal.fire("", "", "info");
-                                }
-                              });
-                            }}
-                          >
-                            X
-                          </button>
+                  if (x.isActive) {
+                    return (
+                      <div className={style.petInfo} key={k}>
+                        <div className={style.profilePictureCont}>
+                          <img
+                            src={u.profilePicture}
+                            alt="profilePicture"
+                            className={style.profilePicture}
+                          />
                         </div>
-                      );
-                    }
-                  })
+                        <div className={style.petData}>
+                          <h2 className={style.titulo}>{u.name}</h2>
+                          <h4 className={style.race}>
+                            {" "}
+                            Raza: <span className={style.span}>{u.race}</span>
+                          </h4>
+                          <p className={style.aboutDog}>
+                            Sobre {u.name}:{" "}
+                            <span className={style.span}>{u.description}</span>
+                          </p>
+                        </div>
+                        <button
+                          className="secondaryButton"
+                          onClick={() => {
+                            Swal.fire({
+                              title:
+                                "¿Estás seguro que querés eliminar a esta mascota?",
+                              showDenyButton: true,
+                              confirmButtonText: "Eliminar",
+                              denyButtonText: `Cancelar`
+                            }).then(async (result) => {
+                              if (result.isConfirmed) {
+                                Swal.fire(
+                                  "¡La mascota fue eliminada!",
+                                  "",
+                                  "success"
+                                );
+                                byePet(u.id);
+                              } else if (result.isDenied) {
+                                Swal.fire("", "", "info");
+                              }
+                            });
+                          }}
+                        >
+                          X
+                        </button>
+                      </div>
+                    );
+                  }
+                })
                 : null}
               <Link to="/agregar-mascota">
                 <button className="primaryButton">Agregar mascota</button>
@@ -369,16 +360,16 @@ export default function Profile() {
             <article className={style.petsProfile}>
               {userData.pets && userData.pets.length > 0
                 ? userData.pets.map(u => {
-                    if (u.isActive) {
-                      return (
-                        <div>
-                          <h3>Mascota: {u.petName}</h3>
-                          <h4>{u.eventType} con {u.providerName}</h4>
-                          <p>Fecha del evento: {u.date.day} {u.date.realDate} -{" "}{u.date.hour}</p>
-                        </div>
-                      );
-                    }
-                  })
+                  if (u.isActive) {
+                    return (
+                      <div>
+                        <h3>Mascota: {u.petName}</h3>
+                        <h4>{u.eventType} con {u.providerName}</h4>
+                        <p>Fecha del evento: {u.date.day} {u.date.realDate} -{" "}{u.date.hour}</p>
+                      </div>
+                    );
+                  }
+                })
                 : null}
               {isProvider && (
                 <div>
@@ -388,19 +379,19 @@ export default function Profile() {
             </article>
             {isProvider && eventsProvider
               ? eventsProvider.map(e => {
-                  return (
-                    <div>
-                      <h3>{e.eventType} acordado con {e.ownerName}</h3>
-                      <p>Mascota: {e.petName}</p>
-                      <p>Fecha del evento: {e.date.day} {e.date.realDate} -{" "}{e.date.hour}</p>
-                    </div>
-                  );
-                })
+                return (
+                  <div>
+                    <h3>{e.eventType} acordado con {e.ownerName}</h3>
+                    <p>Mascota: {e.petName}</p>
+                    <p>Fecha del evento: {e.date.day} {e.date.realDate} -{" "}{e.date.hour}</p>
+                  </div>
+                );
+              })
               : null}
           </section>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </main>
   );
-}
+};

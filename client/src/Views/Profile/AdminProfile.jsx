@@ -18,17 +18,17 @@ export default function Profile() {
       axios
         .get("https://proyecto-grupal.herokuapp.com/owners")
         .then(au => {
-          const userdb = au.data.find(u => u.email === user.email);
+          const userDb = au.data.find(u => u.email === user.email);
           setUser({
             nombre: user.name,
             picture:
-              userdb && userdb.profilePicture && userdb.profilePicture[0]
-                ? userdb.profilePicture[0]
+              userDb && userDb.profilePicture && userDb.profilePicture[0]
+                ? userDb.profilePicture[0]
                 : "/assets/img/notloged.png",
             email: user.email,
-            pets: userdb ? userdb.pets : [],
-            address: userdb.address,
-            isAdmin: userdb.isAdmin
+            pets: userDb ? userDb.pets : [],
+            address: userDb.address,
+            isAdmin: userDb.isAdmin
           });
         })
         .then(() => {
@@ -42,7 +42,7 @@ export default function Profile() {
       <NavBarShop />
       <div className={styleContainer.container}>
         <section className={style.infoProfile}>
-          <img src={userData.picture} alt="profilePicture"/>
+          <img src={userData.picture} alt="profilePicture" />
           <article className={style.profile}>
             <h1 className={style.name}>{user.name}</h1>
             <div>
@@ -60,8 +60,8 @@ export default function Profile() {
             <span className={style.span}>{userData.address ? userData.address.road : null}</span>
           </h4>
         </section>
-        <br/>
-        <br/>
+        <br />
+        <br />
         <section>
           {userData.isAdmin ? (
             <div className={style.adminPanel}>
@@ -78,7 +78,7 @@ export default function Profile() {
           ) : null}
         </section>
       </div>
-      <Footer/>
+      <Footer />
     </main>
   );
 };
