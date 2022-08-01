@@ -3,22 +3,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getProducts, chargeCart, getFavoritesProducts, addTofavorites } from "../../redux/actions/petshopActions";
+import { chargeCart, addTofavorites } from "../../redux/actions/petshopActions";
 import NavBarShop from "../NavBar/NavBarShop";
-import ShopFilters from "./ShopFilters";
+import InLoader from "../Loading/loading";
 import ProductCard from "./ProductCard";
+import ShopFilters from "./ShopFilters";
+import Paginated from "../Paginated";
 import Footer from "../Footer/Footer";
 import inContainer from "../GlobalCss/InContainer.module.css";
 import styles from "../Shop/Shop.module.css";
-import Paginated from "../Paginated";
-import InLoader from "../Loading/loading";
 
-const Shop = () => {
-  const products = useSelector((state) => state.filteredProducts);
+export default function Shop() {
+  const dispatch = useDispatch();
   const { user } = useAuth0();
   const [favorites, setFavorites] = useState([]);
+  const products = useSelector((state) => state.filteredProducts);
 
-  let dispatch = useDispatch();
   useEffect(() => {
     if (favorites) {
       dispatch(addTofavorites(favorites));
@@ -29,9 +29,8 @@ const Shop = () => {
     if (user && user.email) {
       axios
         .get(`https://proyecto-grupal.herokuapp.com/owners/getFavorites/${user.email}`)
-        .then((x) => {
-          console.log(x.data);
-          setFavorites(x.data);
+        .then(gf => {
+          setFavorites(gf.data);
         });
       dispatch(chargeCart("cart"));
     }
@@ -43,15 +42,10 @@ const Shop = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const initialStateProductsPerPage = 12;
-  const [productsPerPage, setProductsPerPage] = useState(
-    initialStateProductsPerPage
-  );
+  const [productsPerPage, setProductsPerPage] = useState(initialStateProductsPerPage);
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products?.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+  const currentProducts = products?.slice(indexOfFirstProduct, indexOfLastProduct);
   const paginated = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -67,32 +61,28 @@ const Shop = () => {
             className={styles.leftArrow}
           />
         </NavLink>
-        <h1 className={styles.shopTitle}>
-          ¡Encontrá lo mejor para tus mascotas!
-        </h1>
+        <h1 className={styles.shopTitle}>¡Encontrá lo mejor para tus mascotas!</h1>
         <div className={styles.shopFlex}>
           <div className={styles.shopFilters}>
             <ShopFilters />
           </div>
-          <br />
           <section className={styles.shopGrid}>
             {!currentProducts.length
-              ? <InLoader/>
-              : currentProducts.map((p) => {
-                  console.log(p);
-                  return p.stock > 0 && p.isActive ? (
-                    <ProductCard
-                      key={p.id}
-                      id={p.id}
-                      setFavorites={setFavorites}
-                      favorites={favorites}
-                      isFavorite={favorites && favorites.includes(p.id)}
-                      profilePicture={p.profilePicture}
-                      name={p.name}
-                      price={p.price}
-                    />
-                  ) : null;
-                })}
+              ? <InLoader />
+              : currentProducts.map(cp => {
+                return cp.stock > 0 && cp.isActive ? (
+                  <ProductCard
+                    key={cp.id}
+                    id={cp.id}
+                    setFavorites={setFavorites}
+                    favorites={favorites}
+                    isFavorite={favorites && favorites.includes(cp.id)}
+                    profilePicture={cp.profilePicture}
+                    name={cp.name}
+                    price={cp.price}
+                  />
+                ) : null;
+              })}
           </section>
         </div>
         <div className={styles.paginado}>
@@ -108,5 +98,3 @@ const Shop = () => {
     </div>
   );
 };
-
-export default Shop;

@@ -1,63 +1,64 @@
-.detailFlex{
+.detailFlex {
     display: flex;
     justify-content: center;
     width: 69vw;
     margin: 100px auto;
 }
 
-.detailImg{
+.detailImg {
     width: 550px;
     height: 550px;
     margin-right: 50px;
 }
 
-.detailRight{
+.detailRight {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-.detailCategory{
+.detailCategory {
     color: var(--gray);
     margin: 10px 0;
     font-weight: 400;
 }
 
-.detailTitle{
+.detailTitle {
     margin: 0;
     margin-bottom: 10px;
     font-weight: 500;
 }
 
-.detailInfo{
+.detailInfo {
     color: var(--gray);
     margin-bottom: 10px;
 }
 
-.detailPrice{
+.detailPrice {
     font-size: 30px;
     margin-bottom: 12px;
     font-weight: 600;
 }
 
-.detailQuantity{
+.detailQuantity {
     color: var(--gray);
     margin: 0;
     font-size: 18px;
     text-transform: uppercase;
 }
-.productQuantity{
+
+.productQuantity {
     display: flex;
     align-items: center;
-    
+
 }
 
-.stock{
+.stock {
     color: red;
     margin-bottom: 12px;
 }
 
-.button{
+.button {
     background-color: var(--white);
     padding: 0;
     font-size: 18px;
@@ -71,24 +72,24 @@
     justify-content: center;
 }
 
-.count{
+.count {
     margin: 0 15px;
     font-size: 18px;
 }
 
-.detailAddCart{
+.detailAddCart {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
 }
 
-.addButtonCart{
+.addButtonCart {
     width: 50%;
     margin-top: 10px;
     border-radius: 5px;
 }
 
-.profile{
+.profile {
     display: flex;
     align-items: center;
     justify-content: center;

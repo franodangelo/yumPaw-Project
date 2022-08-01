@@ -1,53 +1,49 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import { useDispatch } from "react-redux";
-import styles from "../Shop/ProductCard.module.css";
 import { Link } from "react-router-dom";
-import { addTofavorites } from "../../redux/actions/petshopActions";
 import axios from "axios";
-import Swal from 'sweetalert2'
+import { useAuth0 } from "@auth0/auth0-react";
+import Swal from 'sweetalert2';
+import styles from "../Shop/ProductCard.module.css";
 
-const ProductCard = ({
+export default function ProductCard({
   profilePicture,
   name,
   price,
   isFavorite,
   id,
   setFavorites,
-  favorites,
-}) => {
+  favorites
+}) {
   const { user } = useAuth0();
-  const dispatch = useDispatch();
   const addFavorite = async () => {
     if (user) {
       if (!isFavorite) {
         const AllOwners = await axios.get("https://proyecto-grupal.herokuapp.com/owners");
-        const owner = AllOwners.data.find((x) => x.email === user.email);
-        console.log(owner);
-        let objToPut = {
+        const owner = AllOwners.data.find(aod => aod.email === user.email);
+        let objectToPut = {
           ...owner,
-          favorites: owner.favorites[0] ? [...owner.favorites, id] : [id],
+          favorites: owner.favorites[0] ? [...owner.favorites, id] : [id]
         };
         setFavorites([...favorites, id]);
 
-        await axios.put("https://proyecto-grupal.herokuapp.com/owners/addFavorite", objToPut);
+        await axios.put("https://proyecto-grupal.herokuapp.com/owners/addFavorite", objectToPut);
       } else {
         const AllOwners = await axios.get("https://proyecto-grupal.herokuapp.com/owners");
-
-        const owner = AllOwners.data.find((x) => x.email === user.email);
-        console.log(owner);
-        let objToPut = {
+        const owner = AllOwners.data.find(aod => aod.email === user.email);
+        let objectToPut = {
           ...owner,
           favorites: owner.favorites[0]
-            ? owner.favorites.filter((x) => x !== id)
-            : [],
+            ? owner.favorites.filter(of => of !== id)
+            : []
         };
-        setFavorites(favorites.filter((x) => x !== id));
-        console.log(objToPut)
-        await axios.put("https://proyecto-grupal.herokuapp.com/owners/addFavorite", objToPut);
-      }}
-      else{ 
-        Swal.fire('Necesitás iniciar sesión para agregar a favoritos.', '', 'warning')}
+        setFavorites(favorites.filter(ff => ff !== id));
+        await axios.put("https://proyecto-grupal.herokuapp.com/owners/addFavorite", objectToPut);
+      }
+    }
+    else {
+      Swal.fire('Necesitás iniciar sesión para agregar a favoritos.', '', 'warning')
+    }
   };
 
   return (
@@ -67,11 +63,6 @@ const ProductCard = ({
             <div className={styles.cardBottom}>
               <p className={styles.price}>${price}</p>
               <h2 className={styles.cardTitle}>{name}</h2>
-              {/* <button className={styles.addButton} onClick={()=>{
-              dispatch({
-              type:TYPES.ADD_TO_CART,
-              payload:id,
-            })}}>Agregar al carrito</button> */}
             </div>
           </div>
         </Link>
@@ -79,5 +70,3 @@ const ProductCard = ({
     </div>
   );
 };
-
-export default ProductCard;

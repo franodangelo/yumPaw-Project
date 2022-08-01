@@ -1,36 +1,35 @@
-import { getOwners } from "../../redux/actions/ownProvActions";
-import { useSelector, useDispatch } from "react-redux";
-import NavBar from "../NavBar/NavBarShop";
-import Footer from "../Footer/Footer";
 import { useEffect } from "react";
-import EachPurchase from "./EachPurchase";
+import { useSelector, useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import style from "./PurchasesMade.module.css";
+import { getOwners } from "../../redux/actions/ownProvActions";
+import NavBar from "../NavBar/NavBarShop";
+import EachPurchase from "./EachPurchase";
+import Footer from "../Footer/Footer";
 import InContainer from "../GlobalCss/InContainer.module.css";
+import style from "./PurchasesMade.module.css";
 
 export default function PurchasesMade() {
-  const { user } = useAuth0();
   const dispatch = useDispatch();
+  const { user } = useAuth0();
   const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getOwners());
   }, [dispatch]);
 
-  const users = useSelector((state) => state.owners);
-  let userDB = users.find((us) => us.email === user.email);
+  const users = useSelector(state => state.owners);
+  let userDb = users.find(us => us.email === user.email);
 
-  console.log(userDB);
   function goToShop() {
-    navigate("/shop");
+    navigate("/shop"); userDb
   }
 
   return (
     <>
       <NavBar />
       <div className={InContainer.container}>
-      <NavLink to="/mi-perfil">
+        <NavLink to="/mi-perfil">
           <img
             src="/assets/img/arrow-left.svg"
             alt=""
@@ -38,8 +37,8 @@ export default function PurchasesMade() {
           />
         </NavLink>
         <div className={style.container}>
-          {userDB?.solds.length ? (
-            userDB?.solds.map((s) => {
+          {userDb?.solds.length ? (
+            userDb?.solds.map((s) => {
               return (
                 <EachPurchase
                   id={s.id}
@@ -57,12 +56,10 @@ export default function PurchasesMade() {
           )}
         </div>
         <div className={style.shop}>
-        <button className="secondaryButton" onClick={goToShop}>
-          ¡Ir al Petshop!
-        </button>
+          <button className="secondaryButton" onClick={goToShop}>Ir al Petshop</button>
         </div>
       </div>
       <Footer />
     </>
   );
-}
+};

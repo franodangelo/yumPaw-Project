@@ -1,4 +1,4 @@
-.container{
+.container {
     margin: var(--margin80) auto;
     display: flex;
     justify-content: center;
@@ -10,53 +10,53 @@
     background-color: white;
 }
 
-.title{
+.title {
     text-transform: uppercase;
 }
 
-.state{
+.state {
     color: var(--success);
     text-transform: uppercase;
     font-weight: 800;
 }
 
-.stateTit{
+.stateTit {
     color: var(--black);
 }
 
-.total{
+.total {
     color: var(--black);
     font-size: 20px;
     border-top: 1px dashed gray;
     padding: 10px;
 }
 
-.date{
+.date {
     text-transform: uppercase;
 }
 
-.totalFlex{
+.totalFlex {
     display: flex;
     justify-content: center;
     width: 100%;
 }
 
-.continuar{
+.continuar {
     text-transform: uppercase;
     color: var(--shadowColor);
 }
 
-.buttonFlex{
+.buttonFlex {
     display: flex;
     align-items: center;
     flex-direction: column;
 }
 
-.pagar{
+.pagar {
     margin-bottom: 5px;
 }
 
-.borde{
+.borde {
     border-bottom: 1px dashed var(--gray);
     padding: 22px 0;
 }

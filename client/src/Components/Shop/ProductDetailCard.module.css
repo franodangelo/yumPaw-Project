@@ -1,4 +1,4 @@
-.detailFlex{
+.detailFlex {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6,7 +6,7 @@
     margin: var(--margin64) auto;
 }
 
-.detailImg{
+.detailImg {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20,14 +20,14 @@
     background-color: white;
 }
 
-.detailRight{
+.detailRight {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     width: 350px;
 }
 
-.detailCategory{
+.detailCategory {
     color: var(--tintColor);
     margin: 0;
     font-weight: 400;
@@ -35,7 +35,7 @@
     font-size: var(--p);
 }
 
-.detailTitle{
+.detailTitle {
     margin: 0;
     font-weight: 800;
     font-size: var(--regularFont);
@@ -43,27 +43,28 @@
     text-transform: uppercase;
 }
 
-.detailInfo{
+.detailInfo {
     color: #bbb7ae;
     margin-bottom: 16px;
     color: var(--darkGray);
 }
 
-.detailPrice{
+.detailPrice {
     font-size: var(--mediumFont);
     margin-bottom: 16px;
     font-weight: 600;
     color: var(--shadowColor);
 }
 
-.detailQuantity{
+.detailQuantity {
     color: var(--gray);
     margin: 0;
     font-weight: 600;
     font-size: var(--p);
     text-transform: uppercase;
 }
-.productQuantity{
+
+.productQuantity {
     display: flex;
     align-items: center;
     flex-direction: row;
@@ -73,7 +74,7 @@
     padding: 8px;
 }
 
-.stock{
+.stock {
     color: var(--gray);
     font-weight: 600;
     text-transform: uppercase;
@@ -81,7 +82,7 @@
 }
 
 
-.button{
+.button {
     background-color: transparent;
     padding: 0;
     font-size: var(--p);
@@ -98,33 +99,33 @@
     margin: 0;
 }
 
-.button:not(:last-child){
+.button:not(:last-child) {
     border-right: 1px solid var(--gray);
 }
 
-.button:last-child{
+.button:last-child {
     border-left: 1px solid var(--gray);
 }
 
-.count{
+.count {
     margin: 0 14px;
     font-size: 18px;
 }
 
-.detailAddCart{
+.detailAddCart {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     margin-top: 10px;
 }
 
-.profile{
+.profile {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.cartQuantity{
+.cartQuantity {
     color: var(--primaryColor);
     margin: 10px 0px;
     margin-top: 10px;

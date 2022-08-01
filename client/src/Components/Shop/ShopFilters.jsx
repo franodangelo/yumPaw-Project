@@ -9,42 +9,37 @@ import {
 } from "../../redux/actions/petshopActions";
 import styles from "./ShopFilters.module.css";
 
-const ShopFilters = () => {
+export default function ShopFilters() {
   let dispatch = useDispatch();
-
   const [inputSearchBar, setInputSearchBar] = useState('');
   let [select, setSelect] = useState([]);
-  let [petValue, setPetValue] = useState('todos');
-  let [priceValue, setPriceValue] = useState('precio');
+  let [petValue, setPetValue] = useState('pets');
+  let [priceValue, setPriceValue] = useState('price');
   let [checkedOne, setCheckedOne] = useState(false);
   let [checkedTwo, setCheckedTwo] = useState(false);
   let [checkedThree, setCheckedThree] = useState(false);
 
   useEffect(() => {
     dispatch(getProducts());
-  }, [])
+  }, []);
+
   // Hook search bar
   useEffect(() => {
     dispatch(searchBarProducts(inputSearchBar))
   }, [dispatch, inputSearchBar]);
 
-  ///////////////////////////////////////////////
-  // Handle search bar
-  ///////////////////////////////////////////////
+  // Handler search bar
   function onInputChangeSearchbar(e) {
     e.preventDefault();
-    setInputSearchBar(e.target.value)
+    setInputSearchBar(e.target.value);
   };
-  /////////////////////////////////////////////// 
 
   function handleFilterTargetAnimal(e) {
-    console.log(e.target.value);
     dispatch(filterTargetAnimal(e.target.value));
     setPetValue(e.target.value);
   };
 
   function handleOrder(e) {
-    console.log(e.target.value);
     dispatch(sortByPrice(e.target.value));
     setPriceValue(e.target.value);
   };
@@ -53,8 +48,8 @@ const ShopFilters = () => {
     e.preventDefault();
     dispatch(getProducts());
     setInputSearchBar('');
-    setPetValue('todos');
-    setPriceValue('precio');
+    setPetValue('pets');
+    setPriceValue('price');
     setSelect([]);
     setCheckedOne(false);
     setCheckedTwo(false);
@@ -64,85 +59,63 @@ const ShopFilters = () => {
   function checkCategoryOne(e) {
     let selection = e.target.value;
     let already = select.includes(selection);
-    console.log("already", already);
 
     if (!already) {
-      //setCheckedOne(!already);
       setSelect(select = [...select, e.target.value]);
-      console.log('select:::', select)
-
     }
     if (already) {
-      //setCheckedOne(already);
       let aux = select.filter((el) => el !== selection);
       setSelect(select = aux);
-      console.log('aux:::', aux)
     }
     dispatch(filterByCategory(select));
-    setCheckedOne(!already)
-  }
+    setCheckedOne(!already);
+  };
 
   function checkCategoryTwo(e) {
     let selection = e.target.value;
     let already = select.includes(selection);
-    console.log("already", already);
-
     if (!already) {
-      //setCheckedTwo(!already);
       setSelect(select = [...select, e.target.value]);
-      console.log('select:::', select)
     }
     if (already) {
-      //setCheckedTwo(already);
       let aux = select.filter((el) => el !== selection);
       setSelect(select = aux);
-      console.log('aux:::', aux)
     }
     dispatch(filterByCategory(select));
     setCheckedTwo(!already);
-  }
+  };
 
   function checkCategoryThree(e) {
     let selection = e.target.value;
     let already = select.includes(selection);
-    console.log("already", already);
-
     if (!already) {
-      //setCheckedThree(!already);
       setSelect(select = [...select, e.target.value]);
-      console.log('select:::', select)
     }
     if (already) {
-      //setCheckedThree(already);
       let aux = select.filter((el) => el !== selection);
       setSelect(select = aux);
-      console.log('aux:::', aux)
     }
     dispatch(filterByCategory(select));
     setCheckedThree(!already);
-  }
+  };
 
   return (
     <div className={styles.container}>
-
-      {/* Bloque seach bar*/}
       <div className={styles.container}>
         <section className={styles.selects} >
           <p className={styles.filterTitle}>Buscar producto</p>
           <input
             type="text"
             value={inputSearchBar}
-            placeholder="Ingresa tu búsqueda..."
+            placeholder="Ingresá tu búsqueda..."
             className={styles.search}
             onChange={onInputChangeSearchbar}
           />
         </section>
       </div>
-
-      <br />
       <section className={styles.selects}>
         <p className={styles.filterTitle}>Filtrar por Mascota</p>
-        <select name="" id="" className={styles.select} value={petValue} onChange={handleFilterTargetAnimal}>
+        <select className={styles.select} value={petValue} onChange={handleFilterTargetAnimal}>
           <option value="todos" disabled selected>Tipo de Mascota</option>
           <option value="perro">Perro</option>
           <option value="gato">Gato</option>
@@ -152,14 +125,12 @@ const ShopFilters = () => {
           <option value="pajaro">Aves</option>
         </select>
       </section>
-
       <section className={styles.selects}>
         <div className={styles.checkbox}>
           <input
             type="checkbox"
             value="alimento"
             onClick={checkCategoryOne}
-            //onChange={checkCategoryOne}
             className={styles.inputCheck}
             checked={checkedOne}
           />
@@ -186,13 +157,10 @@ const ShopFilters = () => {
           <span className={styles.checkTitle}>Salud y bienestar</span>
         </div>
       </section>
-
       <section className={styles.selects} onChange={(e) => handleOrder(e)}>
         <p className={styles.filterTitle}>Ordenar por</p>
-        <select name="" id="" className={styles.select} value={priceValue}>
-          <option value='precio' disabled selected>
-            Precio
-          </option>
+        <select className={styles.select} value={priceValue}>
+          <option value='price' disabled selected>Precio</option>
           <option value="ASC">Menor a mayor</option>
           <option value="DESC">Mayor a menor</option>
         </select>
@@ -201,5 +169,3 @@ const ShopFilters = () => {
     </div>
   );
 };
-
-export default ShopFilters;
